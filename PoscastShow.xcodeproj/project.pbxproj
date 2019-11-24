@@ -16,6 +16,7 @@
 		DDA9CE91238AC53B006C3368 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE90238AC53B006C3368 /* SearchController.swift */; };
 		DDA9CE94238AC625006C3368 /* Poscast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE93238AC625006C3368 /* Poscast.swift */; };
 		DDA9CE97238AFDE7006C3368 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DDA9CE96238AFDE7006C3368 /* Alamofire */; };
+		DDA9CE99238B02FF006C3368 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE98238B02FF006C3368 /* SearchResults.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		DDA9CE8A238AA773006C3368 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		DDA9CE90238AC53B006C3368 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		DDA9CE93238AC625006C3368 /* Poscast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poscast.swift; sourceTree = "<group>"; };
+		DDA9CE98238B02FF006C3368 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				DDA9CE93238AC625006C3368 /* Poscast.swift */,
+				DDA9CE98238B02FF006C3368 /* SearchResults.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -180,6 +183,7 @@
 				DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */,
 				DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */,
 				DDA9CE8B238AA773006C3368 /* MainTabBarController.swift in Sources */,
+				DDA9CE99238B02FF006C3368 /* SearchResults.swift in Sources */,
 				DDA9CE91238AC53B006C3368 /* SearchController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

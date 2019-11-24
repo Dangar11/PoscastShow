@@ -15,11 +15,7 @@ class SearchController: UITableViewController {
   
   let cellId = "searchCell"
   
-  let podcasts = [
-    Podcast(name: "Jimmy", artistName: "Brian Vong"),
-    Podcast(name: "Braid Pitt", artistName: "Jonny Cash"),
-    Podcast(name: "English in 10 Seconds", artistName: "VenyaTV")
-  ]
+  var podcasts = [Results]()
   
   // UISearchController
   
@@ -61,9 +57,11 @@ class SearchController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+    let podcast = podcasts[indexPath.row]
+    guard let collectionName = podcast.collectionName, let artistName = podcast.artistName else { return UITableViewCell() }
     cell.textLabel?.text = """
-    Podcast: \(podcasts[indexPath.row].name)
-    Author: \(podcasts[indexPath.row].artistName)
+    Podcast: \(collectionName)
+    Author: \(artistName)
     """
     cell.textLabel?.numberOfLines = 0
     cell.imageView?.image = #imageLiteral(resourceName: "appicon")
@@ -85,18 +83,35 @@ extension SearchController: UISearchBarDelegate {
     print(searchText)
     // Alamofire to search iTunes API
     
-    let urlString = "https://itunes.apple.com/search?term=\(searchText)"
+    let url = "https://itunes.apple.com/search"
+    let parameters = ["term" : searchText, "media" : "podcast"]
     
-    guard let url = URL(string: urlString) else { return }
-    Alamofire.request(url).responseData { (dataResponse) in
+    Alamofire.request(url,
+                      method: .get,
+                      parameters: parameters,
+                      encoding: URLEncoding.default,
+                      headers: nil).responseData { (dataResponse) in
+                        
       if let error = dataResponse.error {
         print("Failed to contact yahoo", error)
         return
       }
-      
+  
       guard let data = dataResponse.data else { return }
-      let dummyString = String(data: data, encoding: .utf8)
-      print(dummyString ?? "")
+
+        // decode json data
+      let decoder = JSONDecoder()
+      do {
+        let searchResults = try decoder.decode(SearchResults.self, from: data)
+        searchResults.results?.forEach({ (result) in
+        })
+        guard let podcastResult = searchResults.results else { return }
+        self.podcasts = podcastResult
+        self.tableView.reloadData()
+      } catch let error {
+        print("Failed to Decode: ", error.localizedDescription)
+      }
+      
       
     }
   }
