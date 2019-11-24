@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 
 class SearchController: UITableViewController {
@@ -83,6 +84,21 @@ extension SearchController: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     print(searchText)
     // Alamofire to search iTunes API
+    
+    let urlString = "https://itunes.apple.com/search?term=\(searchText)"
+    
+    guard let url = URL(string: urlString) else { return }
+    Alamofire.request(url).responseData { (dataResponse) in
+      if let error = dataResponse.error {
+        print("Failed to contact yahoo", error)
+        return
+      }
+      
+      guard let data = dataResponse.data else { return }
+      let dummyString = String(data: data, encoding: .utf8)
+      print(dummyString ?? "")
+      
+    }
   }
   
 }
