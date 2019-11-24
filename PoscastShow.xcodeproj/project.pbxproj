@@ -13,6 +13,8 @@
 		DDA9CE80238AA640006C3368 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDA9CE7F238AA640006C3368 /* Assets.xcassets */; };
 		DDA9CE83238AA640006C3368 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDA9CE81238AA640006C3368 /* LaunchScreen.storyboard */; };
 		DDA9CE8B238AA773006C3368 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE8A238AA773006C3368 /* MainTabBarController.swift */; };
+		DDA9CE91238AC53B006C3368 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE90238AC53B006C3368 /* SearchController.swift */; };
+		DDA9CE94238AC625006C3368 /* Poscast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE93238AC625006C3368 /* Poscast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		DDA9CE82238AA640006C3368 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDA9CE84238AA640006C3368 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDA9CE8A238AA773006C3368 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		DDA9CE90238AC53B006C3368 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		DDA9CE93238AC625006C3368 /* Poscast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poscast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,23 +60,41 @@
 		DDA9CE75238AA63B006C3368 /* PoscastShow */ = {
 			isa = PBXGroup;
 			children = (
-				DDA9CE8C238AABF7006C3368 /* Uitility */,
-				DDA9CE76238AA63B006C3368 /* AppDelegate.swift */,
+				DDA9CE92238AC60D006C3368 /* Models */,
+				DDA9CE8D238AB30D006C3368 /* Controllers */,
+				DDA9CE8C238AABF7006C3368 /* Utility */,
 				DDA9CE7A238AA63B006C3368 /* ViewController.swift */,
 				DDA9CE7C238AA63B006C3368 /* Main.storyboard */,
-				DDA9CE7F238AA640006C3368 /* Assets.xcassets */,
 				DDA9CE81238AA640006C3368 /* LaunchScreen.storyboard */,
-				DDA9CE84238AA640006C3368 /* Info.plist */,
-				DDA9CE8A238AA773006C3368 /* MainTabBarController.swift */,
 			);
 			path = PoscastShow;
 			sourceTree = "<group>";
 		};
-		DDA9CE8C238AABF7006C3368 /* Uitility */ = {
+		DDA9CE8C238AABF7006C3368 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				DDA9CE76238AA63B006C3368 /* AppDelegate.swift */,
+				DDA9CE84238AA640006C3368 /* Info.plist */,
+				DDA9CE7F238AA640006C3368 /* Assets.xcassets */,
 			);
-			path = Uitility;
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		DDA9CE8D238AB30D006C3368 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DDA9CE8A238AA773006C3368 /* MainTabBarController.swift */,
+				DDA9CE90238AC53B006C3368 /* SearchController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		DDA9CE92238AC60D006C3368 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DDA9CE93238AC625006C3368 /* Poscast.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,9 +168,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDA9CE94238AC625006C3368 /* Poscast.swift in Sources */,
 				DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */,
 				DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */,
 				DDA9CE8B238AA773006C3368 /* MainTabBarController.swift in Sources */,
+				DDA9CE91238AC53B006C3368 /* SearchController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,7 +318,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6D6XU3X587;
-				INFOPLIST_FILE = PoscastShow/Info.plist;
+				INFOPLIST_FILE = PoscastShow/Utility/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -312,7 +336,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6D6XU3X587;
-				INFOPLIST_FILE = PoscastShow/Info.plist;
+				INFOPLIST_FILE = PoscastShow/Utility/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
