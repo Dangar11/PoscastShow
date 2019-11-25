@@ -34,7 +34,7 @@ class APIService {
                           print("Failed to contact yahoo", error)
                           return
                         }
-                        print(dataResponse.request)
+          
                         
                         guard let data = dataResponse.data else { return }
                         

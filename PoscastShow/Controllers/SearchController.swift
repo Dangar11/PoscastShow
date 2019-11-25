@@ -47,6 +47,7 @@ class SearchController: UITableViewController {
   fileprivate func setupTableView() {
     //1.register CellwCe
     tableView.register(PoscastCell.self, forCellReuseIdentifier: cellId)
+    tableView.tableFooterView = UIView()
   }
   
   
@@ -60,13 +61,6 @@ class SearchController: UITableViewController {
     let podcast = podcasts[indexPath.row]
     
     cell.podcast = podcast
-    guard let collectionName = podcast.collectionName, let artistName = podcast.artistName else { return UITableViewCell() }
-//    cell.textLabel?.text = """
-//    Podcast: \(collectionName)
-//    Author: \(artistName)
-//    """
-//    cell.textLabel?.numberOfLines = 0
-//    cell.imageView?.image = #imageLiteral(resourceName: "appicon")
     return cell
   }
   
@@ -75,7 +69,17 @@ class SearchController: UITableViewController {
     150
   }
   
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let label = UILabel()
+    label.text = "Please enter a Search Term"
+    label.textAlignment = .center
+    label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+    return label
+  }
   
+  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    250
+  }
 }
 
 

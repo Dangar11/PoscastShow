@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 
 
@@ -14,11 +15,17 @@ class PoscastCell: UITableViewCell {
   
   var podcast: Results? {
     didSet {
-      if let artist = podcast?.artistName, let image = podcast?.artworkUrl100, let episode = podcast?.collectionName, let episodeCount = podcast?.trackCount {
+      if let artist = podcast?.artistName, let image = podcast?.artworkUrl600, let episode = podcast?.collectionName, let episodeCount = podcast?.trackCount {
         episodeNameLabel.text = episode
         episodeAuthor.text = artist
         podcastImageView.image = #imageLiteral(resourceName: "appicon")
-        episodesCountLabel.text = "Number of Episodes: \(episodeCount)"
+        episodesCountLabel.text = "\(episodeCount) Episodes"
+        
+        
+        guard let url = URL(string: image) else { return }
+        
+        podcastImageView.sd_setImage(with: url, completed: nil)
+        
       }
     }
   }
