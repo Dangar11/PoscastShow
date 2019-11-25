@@ -45,8 +45,8 @@ class SearchController: UITableViewController {
   
   //MARK: Setup TableView
   fileprivate func setupTableView() {
-    //1.register Cell
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+    //1.register CellwCe
+    tableView.register(PoscastCell.self, forCellReuseIdentifier: cellId)
   }
   
   
@@ -56,20 +56,24 @@ class SearchController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PoscastCell
     let podcast = podcasts[indexPath.row]
+    
+    cell.podcast = podcast
     guard let collectionName = podcast.collectionName, let artistName = podcast.artistName else { return UITableViewCell() }
-    cell.textLabel?.text = """
-    Podcast: \(collectionName)
-    Author: \(artistName)
-    """
-    cell.textLabel?.numberOfLines = 0
-    cell.imageView?.image = #imageLiteral(resourceName: "appicon")
+//    cell.textLabel?.text = """
+//    Podcast: \(collectionName)
+//    Author: \(artistName)
+//    """
+//    cell.textLabel?.numberOfLines = 0
+//    cell.imageView?.image = #imageLiteral(resourceName: "appicon")
     return cell
   }
   
  
-  
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    150
+  }
   
   
 }
@@ -80,40 +84,16 @@ extension SearchController: UISearchBarDelegate {
   
   
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    print(searchText)
     // Alamofire to search iTunes API
     
-    let url = "https://itunes.apple.com/search"
-    let parameters = ["term" : searchText, "media" : "podcast"]
-    
-    Alamofire.request(url,
-                      method: .get,
-                      parameters: parameters,
-                      encoding: URLEncoding.default,
-                      headers: nil).responseData { (dataResponse) in
-                        
-      if let error = dataResponse.error {
-        print("Failed to contact yahoo", error)
-        return
-      }
-  
-      guard let data = dataResponse.data else { return }
 
-        // decode json data
-      let decoder = JSONDecoder()
-      do {
-        let searchResults = try decoder.decode(SearchResults.self, from: data)
-        searchResults.results?.forEach({ (result) in
-        })
-        guard let podcastResult = searchResults.results else { return }
-        self.podcasts = podcastResult
-        self.tableView.reloadData()
-      } catch let error {
-        print("Failed to Decode: ", error.localizedDescription)
-      }
-      
-      
+    APIService.shared.fetchPodcast(searchText: searchText) { [weak self] (podcast) in
+      self?.podcasts = podcast
+      self?.tableView.reloadData()
     }
+    
+
+    
   }
   
 }
