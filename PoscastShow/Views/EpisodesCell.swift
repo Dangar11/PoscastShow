@@ -14,18 +14,22 @@ class EpisodesCell: UITableViewCell {
   
   var episode: Episode? {
     didSet {
-      guard let date = episode?.pubDate, let title = episode?.title, let description = episode?.description else { return }
+      guard let date = episode?.pubDate, let title = episode?.title, let description = episode?.description, let image = episode?.imageURL else { return }
       let dateFormatter = DateFormatter()
       dateFormatter.dateFormat = "dd.MM.yy"
       let dateCreated = dateFormatter.string(from: date)
       dateLabel.text = dateCreated
       episodeLabel.text = title
       descriptionLabel.text = description
+      
+      guard let url = URL(string: image) else { return }
+      episodeImageView.sd_setImage(with: url)
+      
     }
   }
   
   
-  let podcastImageView: UIImageView = {
+  let episodeImageView: UIImageView = {
     
     let imageView = UIImageView(image: #imageLiteral(resourceName: "appicon"))
     imageView.contentMode = .scaleAspectFill
@@ -78,11 +82,11 @@ class EpisodesCell: UITableViewCell {
   
   private func setupUI() {
     
-    addSubview(podcastImageView)
-    podcastImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-    podcastImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-    podcastImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
-    podcastImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+    addSubview(episodeImageView)
+    episodeImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+    episodeImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+    episodeImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+    episodeImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     
     let stackViewLabel = UIStackView(arrangedSubviews: [
     dateLabel,
@@ -100,8 +104,8 @@ class EpisodesCell: UITableViewCell {
     stackViewLabel.translatesAutoresizingMaskIntoConstraints = false
     
     stackViewLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
-    stackViewLabel.centerYAnchor.constraint(equalTo: podcastImageView.centerYAnchor).isActive = true
-    stackViewLabel.leadingAnchor.constraint(equalTo: podcastImageView.trailingAnchor, constant: 16).isActive = true
+    stackViewLabel.centerYAnchor.constraint(equalTo: episodeImageView.centerYAnchor).isActive = true
+    stackViewLabel.leadingAnchor.constraint(equalTo: episodeImageView.trailingAnchor, constant: 16).isActive = true
     
   }
   

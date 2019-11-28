@@ -11,6 +11,7 @@
 		DD958E43239005F900A369F7 /* Episodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E42239005F900A369F7 /* Episodes.swift */; };
 		DD958E4623900A7600A369F7 /* FeedKit in Frameworks */ = {isa = PBXBuildFile; productRef = DD958E4523900A7600A369F7 /* FeedKit */; };
 		DD958E482390444D00A369F7 /* EpisodesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E472390444D00A369F7 /* EpisodesCell.swift */; };
+		DD958E4E2390523100A369F7 /* RSSFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E4D2390523100A369F7 /* RSSFeed.swift */; };
 		DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE76238AA63B006C3368 /* AppDelegate.swift */; };
 		DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE7A238AA63B006C3368 /* ViewController.swift */; };
 		DDA9CE7E238AA63B006C3368 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDA9CE7C238AA63B006C3368 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 		DD958E40239001B200A369F7 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
 		DD958E42239005F900A369F7 /* Episodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episodes.swift; sourceTree = "<group>"; };
 		DD958E472390444D00A369F7 /* EpisodesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesCell.swift; sourceTree = "<group>"; };
+		DD958E4D2390523100A369F7 /* RSSFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeed.swift; sourceTree = "<group>"; };
 		DDA9CE73238AA63B006C3368 /* PoscastShow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PoscastShow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA9CE76238AA63B006C3368 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDA9CE7A238AA63B006C3368 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DD958E4C2390521C00A369F7 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DD958E4D2390523100A369F7 /* RSSFeed.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		DDA9CE6A238AA63B006C3368 = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +86,7 @@
 		DDA9CE75238AA63B006C3368 /* PoscastShow */ = {
 			isa = PBXGroup;
 			children = (
+				DD958E4C2390521C00A369F7 /* Extension */,
 				DDA9CE9A238B1109006C3368 /* API */,
 				DDA9CE92238AC60D006C3368 /* Models */,
 				DDA9CE8D238AB30D006C3368 /* Controllers */,
@@ -217,6 +228,7 @@
 			files = (
 				DDA9CE9C238B1126006C3368 /* APIService.swift in Sources */,
 				DDA9CE9F238C37C7006C3368 /* PodcastCell.swift in Sources */,
+				DD958E4E2390523100A369F7 /* RSSFeed.swift in Sources */,
 				DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */,
 				DD958E482390444D00A369F7 /* EpisodesCell.swift in Sources */,
 				DD958E43239005F900A369F7 /* Episodes.swift in Sources */,

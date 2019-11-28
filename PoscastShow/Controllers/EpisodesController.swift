@@ -38,35 +38,16 @@ class EpisodesController: UITableViewController {
     
     guard let feedUrl = podcast?.feedUrl else { return }
 
-    //if secure use regular https, if not secure replace http with http's
-    let secureFeedURL = feedUrl.contains("https") ? feedUrl : feedUrl.replacingOccurrences(of: "http", with: "https")
-    
-    guard let url = URL(string: secureFeedURL) else { return }
-    
-    let parser = FeedParser(URL: url)
-    parser.parseAsync { (result) in
-      switch result {
-      case .failure(let error):
-        print("Failed to parse RSS feed, ", error)
-      case .success(let feed):
-        switch feed {
-        case .rss(let rss):
-          guard let rssItems = rss.items else { return }
-          print("RSS", rssItems.forEach { feedItem in
-            print(feedItem.iTunes?.iTunesImage)
-            let episode = Episode(feedItem: feedItem)
-            self.episodes.append(episode)
-            })
-          DispatchQueue.main.async {
-            self.tableView.reloadData()
-          }
-        default:
-          print("Found a feed....")
-        }
+    APIService.shared.fetchEpisodes(feedUrl: feedUrl) { [weak self] (episodes) in
+      self?.episodes = episodes
+      
+      DispatchQueue.main.async {
+        self?.tableView.reloadData()
       }
     }
-    
   }
+    
+  
   
   //MARK: - Setup View
   
