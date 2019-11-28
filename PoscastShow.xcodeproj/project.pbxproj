@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD958E41239001B200A369F7 /* EpisodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E40239001B200A369F7 /* EpisodesController.swift */; };
+		DD958E43239005F900A369F7 /* Episodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E42239005F900A369F7 /* Episodes.swift */; };
 		DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE76238AA63B006C3368 /* AppDelegate.swift */; };
 		DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE7A238AA63B006C3368 /* ViewController.swift */; };
 		DDA9CE7E238AA63B006C3368 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDA9CE7C238AA63B006C3368 /* Main.storyboard */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD958E40239001B200A369F7 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
+		DD958E42239005F900A369F7 /* Episodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episodes.swift; sourceTree = "<group>"; };
 		DDA9CE73238AA63B006C3368 /* PoscastShow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PoscastShow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA9CE76238AA63B006C3368 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDA9CE7A238AA63B006C3368 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +99,7 @@
 			children = (
 				DDA9CE8A238AA773006C3368 /* MainTabBarController.swift */,
 				DDA9CE90238AC53B006C3368 /* SearchController.swift */,
+				DD958E40239001B200A369F7 /* EpisodesController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -103,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				DDA9CE98238B02FF006C3368 /* SearchResults.swift */,
+				DD958E42239005F900A369F7 /* Episodes.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -205,6 +211,8 @@
 				DDA9CE9C238B1126006C3368 /* APIService.swift in Sources */,
 				DDA9CE9F238C37C7006C3368 /* PodcastCell.swift in Sources */,
 				DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */,
+				DD958E43239005F900A369F7 /* Episodes.swift in Sources */,
+				DD958E41239001B200A369F7 /* EpisodesController.swift in Sources */,
 				DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */,
 				DDA9CE8B238AA773006C3368 /* MainTabBarController.swift in Sources */,
 				DDA9CE99238B02FF006C3368 /* SearchResults.swift in Sources */,

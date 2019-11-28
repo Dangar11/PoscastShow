@@ -21,10 +21,7 @@ class SearchController: UITableViewController {
   
   let searchController = UISearchController(searchResultsController: nil)
   
-  
-  
-  
-  
+  //MARK: - View Lifecicle
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -41,6 +38,7 @@ class SearchController: UITableViewController {
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
     searchController.searchBar.delegate = self
+    searchController.obscuresBackgroundDuringPresentation = false
   }
   
   //MARK: Setup TableView
@@ -78,8 +76,18 @@ class SearchController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    250
+    podcasts.count > 0 ? 0 : 250
   }
+  
+  
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let episodesController = EpisodesController()
+    let podcast = podcasts[indexPath.row]
+    episodesController.podcast = podcast
+    navigationController?.pushViewController(episodesController, animated: true)
+  }
+  
+  
 }
 
 
