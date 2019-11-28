@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FeedKit
 
 
 class EpisodesController: UITableViewController {
@@ -16,16 +17,12 @@ class EpisodesController: UITableViewController {
     
     didSet {
       navigationItem.title = podcast?.collectionName
+      fetchEpisodes()
     }
     
   }
   
-  var episodes =  [
-  
-  Episode(title: "Episode One: Pilit"),
-    Episode(title: "Second Episode"),
-    Episode(title: "Third Episode")
-  ]
+  var episodes =  [Episode]()
   
   fileprivate let cellId = "episodesCell"
   
@@ -34,6 +31,40 @@ class EpisodesController: UITableViewController {
     
     setupTableView()
  
+  }
+  
+  func fetchEpisodes() {
+    print("Looking for episodes at feed url:", podcast?.feedUrl ?? "" )
+    
+    guard let feedUrl = podcast?.feedUrl else { return }
+
+    //if secure use regular https, if not secure replace http with http's
+    let secureFeedURL = feedUrl.contains("https") ? feedUrl : feedUrl.replacingOccurrences(of: "http", with: "https")
+    
+    guard let url = URL(string: secureFeedURL) else { return }
+    
+    let parser = FeedParser(URL: url)
+    parser.parseAsync { (result) in
+      switch result {
+      case .failure(let error):
+        print("Failed to parse RSS feed, ", error)
+      case .success(let feed):
+        switch feed {
+        case .rss(let rss):
+          guard let rssItems = rss.items else { return }
+          print("RSS", rssItems.forEach { feedItem in
+            let episode = Episode(title: feedItem.title ?? "")
+            self.episodes.append(episode)
+            })
+          DispatchQueue.main.async {
+            self.tableView.reloadData()
+          }
+        default:
+          print("Found a feed....")
+        }
+      }
+    }
+    
   }
   
   //MARK: - Setup View
