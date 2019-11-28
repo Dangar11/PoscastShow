@@ -1,32 +1,26 @@
 //
-//  PodcastCell.swift
+//  EpisodesCell.swift
 //  PoscastShow
 //
-//  Created by Igor Tkach on 25.11.2019.
+//  Created by Igor Tkach on 28.11.2019.
 //  Copyright © 2019 Igor Tkach. All rights reserved.
 //
 
 import UIKit
-import SDWebImage
 
 
-
-class PoscastCell: UITableViewCell {
+class EpisodesCell: UITableViewCell {
   
-  var podcast: Results? {
+  
+  var episode: Episode? {
     didSet {
-      if let artist = podcast?.artistName, let image = podcast?.artworkUrl600, let episode = podcast?.collectionName, let episodeCount = podcast?.trackCount {
-        episodeNameLabel.text = episode
-        episodeAuthor.text = artist
-        podcastImageView.image = #imageLiteral(resourceName: "appicon")
-        episodesCountLabel.text = "\(episodeCount) Episodes"
-        
-        
-        guard let url = URL(string: image) else { return }
-        
-        podcastImageView.sd_setImage(with: url, completed: nil)
-        
-      }
+      guard let date = episode?.pubDate, let title = episode?.title, let description = episode?.description else { return }
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateFormat = "dd.MM.yy"
+      let dateCreated = dateFormatter.string(from: date)
+      dateLabel.text = dateCreated
+      episodeLabel.text = title
+      descriptionLabel.text = description
     }
   }
   
@@ -43,28 +37,29 @@ class PoscastCell: UITableViewCell {
   
   
   
-  let episodeNameLabel: UILabel = {
+  let dateLabel: UILabel = {
+    let label = UILabel()
+    label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+    label.textColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+    label.text = "MONDAY"
+    return label
+  }()
+  
+  let episodeLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     label.textColor = .black
-    label.text = "Brian Voong"
     label.numberOfLines = 2
+    label.text = "Let's Build that AppLet's Build that AppLet's Build that AppLet's Build that AppLet's Build that App"
     return label
   }()
   
-  let episodeAuthor: UILabel = {
+  let descriptionLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-    label.textColor = .black
-    label.text = "Let's Build that App"
-    return label
-  }()
-  
-  let episodesCountLabel: UILabel = {
-    let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+    label.font = UIFont.systemFont(ofSize: 12, weight: .light)
     label.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-    label.text = "50 episodes"
+    label.numberOfLines = 2
+    label.text = "50 episodes50 episodes50 episodes50 episodes50 episodes50 episodes50 episodes"
     return label
   }()
   
@@ -90,9 +85,9 @@ class PoscastCell: UITableViewCell {
     podcastImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     
     let stackViewLabel = UIStackView(arrangedSubviews: [
-    episodeNameLabel,
-    episodeAuthor,
-    episodesCountLabel
+    dateLabel,
+    episodeLabel,
+    descriptionLabel
     ])
     
     stackViewLabel.axis = .vertical

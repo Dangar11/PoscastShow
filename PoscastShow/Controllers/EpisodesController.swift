@@ -53,7 +53,8 @@ class EpisodesController: UITableViewController {
         case .rss(let rss):
           guard let rssItems = rss.items else { return }
           print("RSS", rssItems.forEach { feedItem in
-            let episode = Episode(title: feedItem.title ?? "")
+            print(feedItem.iTunes?.iTunesImage)
+            let episode = Episode(feedItem: feedItem)
             self.episodes.append(episode)
             })
           DispatchQueue.main.async {
@@ -70,7 +71,7 @@ class EpisodesController: UITableViewController {
   //MARK: - Setup View
   
   fileprivate func setupTableView() {
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+    tableView.register(EpisodesCell.self, forCellReuseIdentifier: cellId)
      //remove unnecessary lines
      tableView.tableFooterView = UIView()
     
@@ -86,10 +87,14 @@ class EpisodesController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EpisodesCell
     let episode = episodes[indexPath.row]
-    cell.textLabel?.text = episode.title
+    cell.episode = episode
     return cell
+  }
+  
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 150
   }
   
 }

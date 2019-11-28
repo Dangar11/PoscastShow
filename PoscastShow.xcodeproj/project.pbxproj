@@ -10,6 +10,7 @@
 		DD958E41239001B200A369F7 /* EpisodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E40239001B200A369F7 /* EpisodesController.swift */; };
 		DD958E43239005F900A369F7 /* Episodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E42239005F900A369F7 /* Episodes.swift */; };
 		DD958E4623900A7600A369F7 /* FeedKit in Frameworks */ = {isa = PBXBuildFile; productRef = DD958E4523900A7600A369F7 /* FeedKit */; };
+		DD958E482390444D00A369F7 /* EpisodesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E472390444D00A369F7 /* EpisodesCell.swift */; };
 		DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE76238AA63B006C3368 /* AppDelegate.swift */; };
 		DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE7A238AA63B006C3368 /* ViewController.swift */; };
 		DDA9CE7E238AA63B006C3368 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDA9CE7C238AA63B006C3368 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		DD958E40239001B200A369F7 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
 		DD958E42239005F900A369F7 /* Episodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episodes.swift; sourceTree = "<group>"; };
+		DD958E472390444D00A369F7 /* EpisodesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesCell.swift; sourceTree = "<group>"; };
 		DDA9CE73238AA63B006C3368 /* PoscastShow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PoscastShow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA9CE76238AA63B006C3368 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDA9CE7A238AA63B006C3368 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				DDA9CE9E238C37C7006C3368 /* PodcastCell.swift */,
+				DD958E472390444D00A369F7 /* EpisodesCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				DDA9CE9C238B1126006C3368 /* APIService.swift in Sources */,
 				DDA9CE9F238C37C7006C3368 /* PodcastCell.swift in Sources */,
 				DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */,
+				DD958E482390444D00A369F7 /* EpisodesCell.swift in Sources */,
 				DD958E43239005F900A369F7 /* Episodes.swift in Sources */,
 				DD958E41239001B200A369F7 /* EpisodesController.swift in Sources */,
 				DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */,
