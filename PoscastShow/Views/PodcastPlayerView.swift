@@ -14,8 +14,9 @@ class PoscastPlayerView: UIView {
   
   var episode: Episode? {
     didSet {
-      guard let title = episode?.title, let image = episode?.imageURL else { return }
+      guard let title = episode?.title, let image = episode?.imageURL, let author = episode?.author else { return }
       podcastLabel.text = title
+      podcastAuthor.text = author
       
       guard let url = URL(string: image) else { return }
       podcastImageView.sd_setImage(with: url)
@@ -171,7 +172,8 @@ class PoscastPlayerView: UIView {
     
     
     podcastImageView.topAnchor.constraint(equalTo: buttonDismiss.bottomAnchor, constant: 20).isActive = true
-    podcastImageView.heightAnchor.constraint(equalToConstant: 350).isActive = true
+    //for different screen multiplier
+    podcastImageView.heightAnchor.constraint(lessThanOrEqualTo: heightAnchor, multiplier: 0.45).isActive = true
     podcastImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
     podcastImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
     podcastImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -213,7 +215,7 @@ class PoscastPlayerView: UIView {
     addSubview(authorStackView)
     
 
-    authorStackView.topAnchor.constraint(equalTo: durationStackView.bottomAnchor, constant: 30).isActive = true
+    authorStackView.topAnchor.constraint(lessThanOrEqualTo: durationStackView.bottomAnchor, constant: 10).isActive = true
     authorStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
     authorStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
     
@@ -230,7 +232,7 @@ class PoscastPlayerView: UIView {
     
     addSubview(controlButtonStackView)
     
-    controlButtonStackView.topAnchor.constraint(equalTo: authorStackView.bottomAnchor, constant: 50).isActive = true
+    controlButtonStackView.topAnchor.constraint(equalTo: authorStackView.bottomAnchor, constant: 10).isActive = true
     controlButtonStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 42).isActive = true
     controlButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -42).isActive = true
     
@@ -247,7 +249,7 @@ class PoscastPlayerView: UIView {
     
     addSubview(volumeStackView)
     
-    volumeStackView.topAnchor.constraint(equalTo: controlButtonStackView.bottomAnchor, constant: 50).isActive = true
+    volumeStackView.topAnchor.constraint(lessThanOrEqualTo: controlButtonStackView.bottomAnchor, constant: 20).isActive = true
     volumeStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
     volumeStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
     
