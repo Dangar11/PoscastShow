@@ -7,22 +7,31 @@
 //
 
 import UIKit
-
+import AVKit
 
 class PoscastPlayerView: UIView {
   
-  
+  // MARK: - Properties
   var episode: Episode? {
     didSet {
       guard let title = episode?.title, let image = episode?.imageURL, let author = episode?.author else { return }
       podcastLabel.text = title
       podcastAuthor.text = author
       
+      playEpisode()
+      
+      
       guard let url = URL(string: image) else { return }
       podcastImageView.sd_setImage(with: url)
     }
   }
   
+  
+  let player: AVPlayer = {
+    let av = AVPlayer()
+    av.automaticallyWaitsToMinimizeStalling = false
+    return av
+  }()
   
   
   let buttonDismiss: UIButton = {
@@ -94,10 +103,11 @@ class PoscastPlayerView: UIView {
     return label
   }()
   
-  let playButton: UIButton = {
+  let playPauseButton: UIButton = {
     let button = UIButton(type: .system)
-    button.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
     return button
   }()
   
@@ -140,7 +150,7 @@ class PoscastPlayerView: UIView {
   
   
   
-  
+  //MARK: - ViewLifecycle
   override init(frame: CGRect) {
     super.init(frame: frame)
     backgroundColor = .white
@@ -155,8 +165,33 @@ class PoscastPlayerView: UIView {
   
   
   
+  
+  // MARK: - Utility Function
   @objc fileprivate func handleDismiss() {
     self.removeFromSuperview()
+  }
+  
+  @objc fileprivate func handlePlayPause() {
+    
+    if player.timeControlStatus == .paused {
+      playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+      player.play()
+    } else {
+      playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+      player.pause()
+    }
+  }
+  
+  
+  fileprivate func playEpisode()  {
+    
+    print("Trying to play episode at url: ", episode?.streamURL )
+    
+    guard let streamURL = episode?.streamURL else { return }
+    guard let url = URL(string: streamURL) else { return }
+    let playerItem = AVPlayerItem(url: url)
+    player.replaceCurrentItem(with: playerItem)
+    player.play()
   }
   
   fileprivate func setupView() {
@@ -222,7 +257,7 @@ class PoscastPlayerView: UIView {
     
     let controlButtonStackView = UIStackView(arrangedSubviews: [
     rewindButton,
-    playButton,
+    playPauseButton,
     forwardButton
     ])
     
