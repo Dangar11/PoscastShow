@@ -13,7 +13,6 @@ class PoscastPlayerView: UIView {
   
   
   
-  
   // MARK: - Properties
   var episode: Episode? {
     didSet {
@@ -63,6 +62,7 @@ class PoscastPlayerView: UIView {
   let currentTimeSlider: UISlider = {
     let slider = UISlider()
     slider.translatesAutoresizingMaskIntoConstraints = false
+    slider.addTarget(self, action: #selector(handleCurrentTimeSliderChange), for: .valueChanged)
     slider.value = 0
     return slider
   }()
@@ -123,6 +123,7 @@ class PoscastPlayerView: UIView {
     let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "rewind15").withRenderingMode(.alwaysOriginal), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.addTarget(self, action: #selector(handleRewind), for: .touchUpInside)
     return button
   }()
   
@@ -130,6 +131,7 @@ class PoscastPlayerView: UIView {
     let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "fastforward15").withRenderingMode(.alwaysOriginal), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.addTarget(self, action: #selector(handleForward), for: .touchUpInside)
     return button
   }()
   
@@ -137,6 +139,7 @@ class PoscastPlayerView: UIView {
   let volumeSlider: UISlider = {
     let slider = UISlider()
     slider.translatesAutoresizingMaskIntoConstraints = false
+    slider.addTarget(self, action: #selector(handleVolumeChange), for: .valueChanged)
     return slider
   }()
   
@@ -144,6 +147,7 @@ class PoscastPlayerView: UIView {
     let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "muted_volume").withRenderingMode(.alwaysOriginal), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.addTarget(self, action: #selector(handleVolumeDown), for: .touchUpInside)
     return button
   }()
   
@@ -151,6 +155,7 @@ class PoscastPlayerView: UIView {
     let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "max_volume").withRenderingMode(.alwaysOriginal), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.addTarget(self, action: #selector(handleVolumeUp), for: .touchUpInside)
     return button
   }()
   
@@ -165,17 +170,12 @@ class PoscastPlayerView: UIView {
     backgroundColor = .white
     
     setupView()
-    
-    
+    //set from 0.0 - 1.0
+    defaultVolumeValue(value: 0.3)
+
     observePlayerCurrentTime()
+    normalPlayback()
     
-    
-    //call when caching ended and podcast is started to play
-    let time = CMTime(value: 1, timescale: 3)
-    let times = [NSValue(time: time)]
-    player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
-      self.enlargePodcastImageView()
-    }
     
   }
   
@@ -200,6 +200,16 @@ class PoscastPlayerView: UIView {
   }
   
   
+  fileprivate func normalPlayback() {
+    //call when caching ended and podcast is started to play
+    let time = CMTime(value: 1, timescale: 3)
+    let times = [NSValue(time: time)]
+    player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+      self.enlargePodcastImageView()
+    }
+  }
+  
+  
   fileprivate func updateCurrentTimeSlider()  {
     //Update currentTimeSlider = currentTime / duration
     let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
@@ -210,11 +220,13 @@ class PoscastPlayerView: UIView {
   }
   
   
-  // MARK: - Utility Function
+  // MARK: - Target Action Function
+  //Dismiss
   @objc fileprivate func handleDismiss() {
     self.removeFromSuperview()
   }
   
+  //Pause-Play
   @objc fileprivate func handlePlayPause() {
     
     if player.timeControlStatus == .paused {
@@ -228,10 +240,68 @@ class PoscastPlayerView: UIView {
     }
   }
   
+  //Time Slider
+  @objc fileprivate func handleCurrentTimeSliderChange() {
+    print("Slider value: ", currentTimeSlider.value)
+    
+    let percantage = currentTimeSlider.value
+    //set the playback to current time
+    
+    guard let duration = player.currentItem?.duration else { return }
+      
+    let durationInSeconds = CMTimeGetSeconds(duration)
+    
+    let seekTimeInSeconds = Float64(percantage) * durationInSeconds
+    //Time object to represent number of seconds
+    let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, preferredTimescale: 1)
+    
+    player.seek(to: seekTime)
+  }
+  
+  
+  @objc fileprivate func handleForward() {
+    seekToCurrentTime(delta: 15)
+  }
+  
+  @objc fileprivate func handleRewind() {
+    seekToCurrentTime(delta: -15)
+  }
+  
+  fileprivate func seekToCurrentTime(delta: Int64) {
+    let fifteenSeconds = CMTimeMake(value: delta, timescale: 1)
+    let seekTime = CMTimeAdd(player.currentTime(), fifteenSeconds)
+    player.seek(to: seekTime)
+  }
+  
+  
+  //MARK: Volume
+  @objc fileprivate func handleVolumeChange() {
+    player.volume = volumeSlider.value
+  }
+  
+  
+  @objc fileprivate func handleVolumeUp() {
+    let volumeUp = volumeSlider.value + 0.1
+    volumeSlider.value = volumeUp
+    let volume = min(1, volumeUp)
+    print("VolumeUp: ", volume)
+    player.volume = min(1, volumeUp)
+  }
+  
+  @objc fileprivate func handleVolumeDown() {
+    let volumeDown = volumeSlider.value - 0.1
+    volumeSlider.value = volumeDown
+    let volume = max(0, volumeDown)
+    print("VolumeDown: ", volume)
+    player.volume = max(0, volumeDown)
+  }
   
   
   
   
+  
+  
+  //MARK: - Utility Function
   fileprivate func enlargePodcastImageView() {
     UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
          self.podcastImageView.transform = .identity
@@ -254,6 +324,12 @@ class PoscastPlayerView: UIView {
     let playerItem = AVPlayerItem(url: url)
     player.replaceCurrentItem(with: playerItem)
     player.play()
+  }
+  
+  //Set defaultVolumeValue
+  fileprivate func defaultVolumeValue(value: Float) {
+    volumeSlider.value = value
+    player.volume = value
   }
   
   fileprivate func setupView() {
