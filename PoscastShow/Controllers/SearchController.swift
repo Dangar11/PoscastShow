@@ -32,7 +32,7 @@ class SearchController: UITableViewController {
     setupSearchBar()
     setupTableView()
     
-    searchBar(searchController.searchBar, textDidChange: "Voong")
+//    searchBar(searchController.searchBar, textDidChange: "Voong")
   }
   
   
@@ -81,6 +81,28 @@ class SearchController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     podcasts.count > 0 ? 0 : 250
+  }
+  
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    activityIndicator.color = .darkGray
+    activityIndicator.startAnimating()
+    let searchLabel = UILabel()
+    searchLabel.text = "Searching"
+    searchLabel.textAlignment = .center
+    let stackView = UIStackView(arrangedSubviews: [
+    activityIndicator,
+    searchLabel
+    ])
+    stackView.alignment = .center
+    stackView.axis = .vertical
+    stackView.spacing = 10
+    return stackView
+  }
+  
+  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    guard let searchBar = searchController.searchBar.text?.count else { return 0 }
+    return podcasts.isEmpty && searchBar >= 1 ? 100 : 0
   }
   
   
