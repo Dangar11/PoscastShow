@@ -184,17 +184,18 @@ class PoscastPlayerView: UIView {
   }
   
   
+  
   fileprivate func observePlayerCurrentTime() {
     //reported changeTime notify every 0.5 seconds
     let interval = CMTime(value: 1, timescale: 2)
-    player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { (time) in
+    player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
       //Extend CMTime
-      self.startDurationLabel.text = time.toDisplayString()
-      let durationTime = self.player.currentItem?.duration
-      self.endDurationLabel.text = durationTime?.toDisplayString()
+      self?.startDurationLabel.text = time.toDisplayString()
+      let durationTime = self?.player.currentItem?.duration
+      self?.endDurationLabel.text = durationTime?.toDisplayString()
       
       
-      self.updateCurrentTimeSlider()
+      self?.updateCurrentTimeSlider()
       
     }
   }
@@ -204,8 +205,8 @@ class PoscastPlayerView: UIView {
     //call when caching ended and podcast is started to play
     let time = CMTime(value: 1, timescale: 3)
     let times = [NSValue(time: time)]
-    player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
-      self.enlargePodcastImageView()
+    player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+      self?.enlargePodcastImageView()
     }
   }
   

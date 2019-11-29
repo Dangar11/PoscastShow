@@ -17,6 +17,8 @@ class SearchController: UITableViewController {
   
   var podcasts = [Results]()
   
+  //search delay
+  var timer: Timer?
   // UISearchController
   
   let searchController = UISearchController(searchResultsController: nil)
@@ -100,11 +102,16 @@ extension SearchController: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     // Alamofire to search iTunes API
     
-
-    APIService.shared.fetchPodcast(searchText: searchText) { [weak self] (podcast) in
-      self?.podcasts = podcast
-      self?.tableView.reloadData()
-    }
+    
+    timer?.invalidate()
+    timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
+      APIService.shared.fetchPodcast(searchText: searchText) { [weak self] (podcast) in
+        self?.podcasts = podcast
+        self?.tableView.reloadData()
+      }
+    })
+    
+    
     
 
     

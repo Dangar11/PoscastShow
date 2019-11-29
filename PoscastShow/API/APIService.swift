@@ -25,24 +25,28 @@ class APIService {
     
     guard let url = URL(string: secureFeedURL) else { return }
     
-    let parser = FeedParser(URL: url)
-    parser.parseAsync { (result) in
-      switch result {
-      case .failure(let error):
-        print("Failed to parse XML feed, ", error)
-      case .success(let feed):
-        switch feed {
-        case .rss(let rss):
-          //return from extenstion(RSSFeed)
-          let episodes = rss.toEpisodes()
-          completionHandler(episodes)
-          
-          
-        default:
-          print("Found a feed....")
+    DispatchQueue.global(qos: .background).async {
+      let parser = FeedParser(URL: url)
+      
+      parser.parseAsync { (result) in
+        switch result {
+        case .failure(let error):
+          print("Failed to parse XML feed, ", error)
+        case .success(let feed):
+          switch feed {
+          case .rss(let rss):
+            //return from extenstion(RSSFeed)
+            let episodes = rss.toEpisodes()
+            completionHandler(episodes)
+            
+            
+          default:
+            print("Found a feed....")
+          }
         }
       }
     }
+    
   }
   
   

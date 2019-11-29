@@ -62,6 +62,17 @@ class EpisodesController: UITableViewController {
   
   //MARK: - UITableView
   
+  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return episodes.isEmpty ? 200 : 0
+  }
+  
+  
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    let activityIndicatiorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
+    activityIndicatiorView.color = .darkGray
+    activityIndicatiorView.startAnimating()
+    return activityIndicatiorView
+  }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return episodes.count
