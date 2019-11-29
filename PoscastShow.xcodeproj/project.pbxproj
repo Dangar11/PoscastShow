@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD678FF523919E3C00EAE117 /* CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD678FF423919E3C00EAE117 /* CMTime.swift */; };
 		DD958E41239001B200A369F7 /* EpisodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E40239001B200A369F7 /* EpisodesController.swift */; };
 		DD958E43239005F900A369F7 /* Episodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD958E42239005F900A369F7 /* Episodes.swift */; };
 		DD958E4623900A7600A369F7 /* FeedKit in Frameworks */ = {isa = PBXBuildFile; productRef = DD958E4523900A7600A369F7 /* FeedKit */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD678FF423919E3C00EAE117 /* CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMTime.swift; sourceTree = "<group>"; };
 		DD958E40239001B200A369F7 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
 		DD958E42239005F900A369F7 /* Episodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episodes.swift; sourceTree = "<group>"; };
 		DD958E472390444D00A369F7 /* EpisodesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesCell.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				DD958E4D2390523100A369F7 /* RSSFeed.swift */,
+				DD678FF423919E3C00EAE117 /* CMTime.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				DD958E4E2390523100A369F7 /* RSSFeed.swift in Sources */,
 				DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */,
 				DD958E482390444D00A369F7 /* EpisodesCell.swift in Sources */,
+				DD678FF523919E3C00EAE117 /* CMTime.swift in Sources */,
 				DD958E43239005F900A369F7 /* Episodes.swift in Sources */,
 				DD958E41239001B200A369F7 /* EpisodesController.swift in Sources */,
 				DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */,

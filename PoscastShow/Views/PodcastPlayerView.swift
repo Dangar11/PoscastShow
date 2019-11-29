@@ -11,6 +11,9 @@ import AVKit
 
 class PoscastPlayerView: UIView {
   
+  
+  
+  
   // MARK: - Properties
   var episode: Episode? {
     didSet {
@@ -26,6 +29,7 @@ class PoscastPlayerView: UIView {
     }
   }
   
+  let scale: CGFloat = 0.7
   
   let player: AVPlayer = {
     let av = AVPlayer()
@@ -46,7 +50,9 @@ class PoscastPlayerView: UIView {
   
   
   let podcastImageView: UIImageView = {
+    let scale: CGFloat = 0.7
     let imageView = UIImageView(image: #imageLiteral(resourceName: "appicon"))
+    imageView.transform = CGAffineTransform(scaleX: scale, y: scale)
     imageView.contentMode = .scaleAspectFill
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.layer.cornerRadius = 10
@@ -54,9 +60,10 @@ class PoscastPlayerView: UIView {
     return imageView
   }()
   
-  let podcastSlider: UISlider = {
+  let currentTimeSlider: UISlider = {
     let slider = UISlider()
     slider.translatesAutoresizingMaskIntoConstraints = false
+    slider.value = 0
     return slider
   }()
   
@@ -151,11 +158,24 @@ class PoscastPlayerView: UIView {
   
   
   //MARK: - ViewLifecycle
+  
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     backgroundColor = .white
     
     setupView()
+    
+    
+    observePlayerCurrentTime()
+    
+    
+    //call when caching ended and podcast is started to play
+    let time = CMTime(value: 1, timescale: 3)
+    let times = [NSValue(time: time)]
+    player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+      self.enlargePodcastImageView()
+    }
     
   }
   
@@ -164,6 +184,30 @@ class PoscastPlayerView: UIView {
   }
   
   
+  fileprivate func observePlayerCurrentTime() {
+    //reported changeTime notify every 0.5 seconds
+    let interval = CMTime(value: 1, timescale: 2)
+    player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { (time) in
+      //Extend CMTime
+      self.startDurationLabel.text = time.toDisplayString()
+      let durationTime = self.player.currentItem?.duration
+      self.endDurationLabel.text = durationTime?.toDisplayString()
+      
+      
+      self.updateCurrentTimeSlider()
+      
+    }
+  }
+  
+  
+  fileprivate func updateCurrentTimeSlider()  {
+    //Update currentTimeSlider = currentTime / duration
+    let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
+    let durationInSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1))
+    let percentage = currentTimeSeconds / durationInSeconds
+    
+    self.currentTimeSlider.value = Float(percentage)
+  }
   
   
   // MARK: - Utility Function
@@ -176,12 +220,30 @@ class PoscastPlayerView: UIView {
     if player.timeControlStatus == .paused {
       playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
       player.play()
+      enlargePodcastImageView()
     } else {
       playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
       player.pause()
+      shrinkEpisodeImageView()
     }
   }
   
+  
+  
+  
+  
+  fileprivate func enlargePodcastImageView() {
+    UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+         self.podcastImageView.transform = .identity
+       }, completion: nil)
+  }
+  
+  
+  fileprivate func shrinkEpisodeImageView() {
+    UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+      self.podcastImageView.transform = CGAffineTransform(scaleX: self.scale, y: self.scale)
+    }, completion: nil)
+  }
   
   fileprivate func playEpisode()  {
     
@@ -199,7 +261,7 @@ class PoscastPlayerView: UIView {
     
     addSubview(podcastImageView)
     addSubview(buttonDismiss)
-    addSubview(podcastSlider)
+    addSubview(currentTimeSlider)
     
     buttonDismiss.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12).isActive = true
     buttonDismiss.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
@@ -213,9 +275,9 @@ class PoscastPlayerView: UIView {
     podcastImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
     podcastImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     
-    podcastSlider.topAnchor.constraint(equalTo: podcastImageView.bottomAnchor, constant: 10).isActive = true
-    podcastSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
-    podcastSlider.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
+    currentTimeSlider.topAnchor.constraint(equalTo: podcastImageView.bottomAnchor, constant: 10).isActive = true
+    currentTimeSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
+    currentTimeSlider.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
     
     
     let durationStackView = UIStackView(arrangedSubviews: [
@@ -230,7 +292,7 @@ class PoscastPlayerView: UIView {
     addSubview(durationStackView)
     
     
-    durationStackView.topAnchor.constraint(equalTo: podcastSlider.bottomAnchor, constant: 5).isActive = true
+    durationStackView.topAnchor.constraint(equalTo: currentTimeSlider.bottomAnchor, constant: 5).isActive = true
     durationStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
     durationStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
     
