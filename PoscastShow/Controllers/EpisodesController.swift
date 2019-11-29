@@ -78,6 +78,21 @@ class EpisodesController: UITableViewController {
     return 150
   }
   
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let episode = self.episodes[indexPath.row]
+    print("Trying to play episode:", episode.title )
+    
+    let window = UIApplication.shared.keyWindow
+    let playerView = PoscastPlayerView()
+    playerView.frame = self.view.frame
+    window?.addSubview(playerView)
+    
+    playerView.episode = episode
+  }
+  
+  
+  
+  
 }
 
 
