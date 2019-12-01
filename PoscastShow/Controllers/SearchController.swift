@@ -32,7 +32,7 @@ class SearchController: UITableViewController {
     setupSearchBar()
     setupTableView()
     
-//    searchBar(searchController.searchBar, textDidChange: "Voong")
+    searchBar(searchController.searchBar, textDidChange: "Voong")
   }
   
   

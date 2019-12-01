@@ -9,7 +9,7 @@
 import UIKit
 import AVKit
 
-class PoscastPlayerView: UIView {
+class PodcastPlayerView: UIView {
   
   
   
@@ -19,24 +19,28 @@ class PoscastPlayerView: UIView {
       guard let title = episode?.title, let image = episode?.imageURL, let author = episode?.author else { return }
       podcastLabel.text = title
       podcastAuthor.text = author
+      miniPlayerLabel.text = title
+    
       
       playEpisode()
       
       
       guard let url = URL(string: image) else { return }
       podcastImageView.sd_setImage(with: url)
+      miniPlayerImageView.sd_setImage(with: url)
     }
   }
   
+  let player: AVPlayer = {
+      let av = AVPlayer()
+      av.automaticallyWaitsToMinimizeStalling = false
+      return av
+    }()
+  
+  
   let scale: CGFloat = 0.7
   
-  let player: AVPlayer = {
-    let av = AVPlayer()
-    av.automaticallyWaitsToMinimizeStalling = false
-    return av
-  }()
-  
-  
+  //MARK: - MAIN PLAYER
   let buttonDismiss: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("Dismiss", for: .normal)
@@ -110,7 +114,7 @@ class PoscastPlayerView: UIView {
     return label
   }()
   
-  let playPauseButton: UIButton = {
+  @objc let playPauseButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -160,6 +164,52 @@ class PoscastPlayerView: UIView {
   }()
   
   
+  //MARK: - Mini Player Properties
+  
+  let miniPlayerView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .white
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+  
+  
+  
+    let miniPlayerImageView: UIImageView = {
+      let imageView = UIImageView(image: #imageLiteral(resourceName: "appicon"))
+      imageView.translatesAutoresizingMaskIntoConstraints = false
+      imageView.layer.cornerRadius = 5
+      imageView.clipsToBounds = true
+      return imageView
+    }()
+    
+  let miniPlayerLabel: UILabel = {
+      let label = UILabel()
+      label.text = "Hello it's let's build that app Hello it's let's build that app"
+      label.textAlignment = .left
+      label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+      label.translatesAutoresizingMaskIntoConstraints = false
+      return label
+    }()
+    
+    let miniPlayerPlayPauseButton: UIButton = {
+      let button = UIButton(type: .system)
+      button.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+      button.translatesAutoresizingMaskIntoConstraints = false
+      button.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+      return button
+    }()
+    
+    
+    let miniPlayerForwardButton: UIButton = {
+      let button = UIButton(type: .system)
+      button.setImage(#imageLiteral(resourceName: "fastforward15").withRenderingMode(.alwaysOriginal), for: .normal)
+      button.translatesAutoresizingMaskIntoConstraints = false
+      button.addTarget(self, action: #selector(handleForward), for: .touchUpInside)
+      return button
+    }()
+  
+  
   
   
   //MARK: - ViewLifecycle
@@ -169,10 +219,10 @@ class PoscastPlayerView: UIView {
     super.init(frame: frame)
     backgroundColor = .white
     
+    addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
     setupView()
     //set from 0.0 - 1.0
     defaultVolumeValue(value: 0.3)
-
     observePlayerCurrentTime()
     normalPlayback()
     
@@ -183,48 +233,22 @@ class PoscastPlayerView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  
-  
-  fileprivate func observePlayerCurrentTime() {
-    //reported changeTime notify every 0.5 seconds
-    let interval = CMTime(value: 1, timescale: 2)
-    player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
-      //Extend CMTime
-      self?.startDurationLabel.text = time.toDisplayString()
-      let durationTime = self?.player.currentItem?.duration
-      self?.endDurationLabel.text = durationTime?.toDisplayString()
-      
-      
-      self?.updateCurrentTimeSlider()
-      
-    }
-  }
-  
-  
-  fileprivate func normalPlayback() {
-    //call when caching ended and podcast is started to play
-    let time = CMTime(value: 1, timescale: 3)
-    let times = [NSValue(time: time)]
-    player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
-      self?.enlargePodcastImageView()
-    }
-  }
-  
-  
-  fileprivate func updateCurrentTimeSlider()  {
-    //Update currentTimeSlider = currentTime / duration
-    let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
-    let durationInSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1))
-    let percentage = currentTimeSeconds / durationInSeconds
-    
-    self.currentTimeSlider.value = Float(percentage)
-  }
-  
+
   
   // MARK: - Target Action Function
+  
+  @objc func handleTapMaximize() {
+    
+    let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+    mainTabBarController?.maximizePlayerDetails(episode: nil)
+    print("Tapping to maximizing")
+  }
+  
   //Dismiss
   @objc fileprivate func handleDismiss() {
-    self.removeFromSuperview()
+//    self.removeFromSuperview()
+    let mainTapBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+    mainTapBarController?.minimizePlayerDetails()
   }
   
   //Pause-Play
@@ -232,10 +256,12 @@ class PoscastPlayerView: UIView {
     
     if player.timeControlStatus == .paused {
       playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+      miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
       player.play()
       enlargePodcastImageView()
     } else {
       playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+      miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
       player.pause()
       shrinkEpisodeImageView()
     }
@@ -297,139 +323,6 @@ class PoscastPlayerView: UIView {
     player.volume = max(0, volumeDown)
   }
   
-  
-  
-  
-  
-  
-  //MARK: - Utility Function
-  fileprivate func enlargePodcastImageView() {
-    UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-         self.podcastImageView.transform = .identity
-       }, completion: nil)
-  }
-  
-  
-  fileprivate func shrinkEpisodeImageView() {
-    UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-      self.podcastImageView.transform = CGAffineTransform(scaleX: self.scale, y: self.scale)
-    }, completion: nil)
-  }
-  
-  fileprivate func playEpisode()  {
-    
-    print("Trying to play episode at url: ", episode?.streamURL )
-    
-    guard let streamURL = episode?.streamURL else { return }
-    guard let url = URL(string: streamURL) else { return }
-    let playerItem = AVPlayerItem(url: url)
-    player.replaceCurrentItem(with: playerItem)
-    player.play()
-  }
-  
-  //Set defaultVolumeValue
-  fileprivate func defaultVolumeValue(value: Float) {
-    volumeSlider.value = value
-    player.volume = value
-  }
-  
-  fileprivate func setupView() {
-    
-    
-    addSubview(podcastImageView)
-    addSubview(buttonDismiss)
-    addSubview(currentTimeSlider)
-    
-    buttonDismiss.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12).isActive = true
-    buttonDismiss.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-    buttonDismiss.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-    
-    
-    podcastImageView.topAnchor.constraint(equalTo: buttonDismiss.bottomAnchor, constant: 20).isActive = true
-    //for different screen multiplier
-    podcastImageView.heightAnchor.constraint(lessThanOrEqualTo: heightAnchor, multiplier: 0.45).isActive = true
-    podcastImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
-    podcastImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
-    podcastImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-    
-    currentTimeSlider.topAnchor.constraint(equalTo: podcastImageView.bottomAnchor, constant: 10).isActive = true
-    currentTimeSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
-    currentTimeSlider.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
-    
-    
-    let durationStackView = UIStackView(arrangedSubviews: [
-    startDurationLabel,
-    endDurationLabel
-    ])
-    
-    durationStackView.distribution = .fillEqually
-    durationStackView.translatesAutoresizingMaskIntoConstraints = false
-    
-    
-    addSubview(durationStackView)
-    
-    
-    durationStackView.topAnchor.constraint(equalTo: currentTimeSlider.bottomAnchor, constant: 5).isActive = true
-    durationStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
-    durationStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
-    
-    
-    
-    let authorStackView = UIStackView(arrangedSubviews: [
-    podcastLabel,
-    podcastAuthor
-    ])
-    
-    authorStackView.alignment = .center
-    authorStackView.axis = .vertical
-    authorStackView.distribution = .fillEqually
-    authorStackView.translatesAutoresizingMaskIntoConstraints = false
-    
-    
-    addSubview(authorStackView)
-    
-
-    authorStackView.topAnchor.constraint(lessThanOrEqualTo: durationStackView.bottomAnchor, constant: 10).isActive = true
-    authorStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
-    authorStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
-    
-    
-    let controlButtonStackView = UIStackView(arrangedSubviews: [
-    rewindButton,
-    playPauseButton,
-    forwardButton
-    ])
-    
-    controlButtonStackView.translatesAutoresizingMaskIntoConstraints = false
-    controlButtonStackView.distribution = .fillEqually
-    controlButtonStackView.alignment = .center
-    
-    addSubview(controlButtonStackView)
-    
-    controlButtonStackView.topAnchor.constraint(equalTo: authorStackView.bottomAnchor, constant: 10).isActive = true
-    controlButtonStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 42).isActive = true
-    controlButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -42).isActive = true
-    
-    let volumeStackView = UIStackView(arrangedSubviews: [
-    lessVolumeButton,
-    volumeSlider,
-    moreVolumeButton
-    ])
-    
-    volumeStackView.distribution = .fill
-    volumeStackView.alignment = .center
-    volumeStackView.spacing = 5
-    volumeStackView.translatesAutoresizingMaskIntoConstraints = false
-    
-    addSubview(volumeStackView)
-    
-    volumeStackView.topAnchor.constraint(lessThanOrEqualTo: controlButtonStackView.bottomAnchor, constant: 20).isActive = true
-    volumeStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32).isActive = true
-    volumeStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32).isActive = true
-    
-    
-    
-  }
   
   
 }

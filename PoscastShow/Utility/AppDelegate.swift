@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow()
     window?.makeKeyAndVisible()
     
-    window?.rootViewController = MainTapBarController()
+    window?.rootViewController = MainTabBarController()
     
     
     return true
