@@ -13,7 +13,6 @@ extension PodcastPlayerView {
   
   
   
-  
   func setupView() {
   
     
@@ -25,8 +24,9 @@ extension PodcastPlayerView {
     
     
     buttonDismiss.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12).isActive = true
-    buttonDismiss.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-    buttonDismiss.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+    buttonDismiss.widthAnchor.constraint(equalToConstant: 40).isActive = true
+    buttonDismiss.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    buttonDismiss.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     
     
     podcastImageView.topAnchor.constraint(equalTo: buttonDismiss.bottomAnchor, constant: 20).isActive = true

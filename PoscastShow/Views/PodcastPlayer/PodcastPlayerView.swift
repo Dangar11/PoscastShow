@@ -43,7 +43,7 @@ class PodcastPlayerView: UIView {
   //MARK: - MAIN PLAYER
   let buttonDismiss: UIButton = {
     let button = UIButton(type: .system)
-    button.setTitle("Dismiss", for: .normal)
+    button.setImage(#imageLiteral(resourceName: "minus"), for: .normal)
     button.tintColor = .black
     button.translatesAutoresizingMaskIntoConstraints = false
     button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
@@ -168,7 +168,7 @@ class PodcastPlayerView: UIView {
   
   let miniPlayerView: UIView = {
     let view = UIView()
-    view.backgroundColor = .white
+    view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -220,6 +220,7 @@ class PodcastPlayerView: UIView {
     backgroundColor = .white
     
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+    addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
     setupView()
     //set from 0.0 - 1.0
     defaultVolumeValue(value: 0.3)
@@ -237,6 +238,7 @@ class PodcastPlayerView: UIView {
   
   // MARK: - Target Action Function
   
+  //MARK: Pan Gesture
   @objc func handleTapMaximize() {
     
     let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
@@ -244,6 +246,27 @@ class PodcastPlayerView: UIView {
     print("Tapping to maximizing")
   }
   
+  
+  @objc func handleDismissalPan(gesture: UIPanGestureRecognizer) {
+    
+    if gesture.state == .changed {
+      let translation = gesture.translation(in: superview)
+      transform = CGAffineTransform(translationX: 0, y: translation.y)
+    } else if gesture.state == .ended {
+      let translation = gesture.translation(in: superview)
+      UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+        self.transform = .identity
+        if translation.y > 50 {
+          let mainTabBarConroller = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+          mainTabBarConroller?.minimizePlayerDetails()
+        }
+      })
+    }
+    
+  }
+
+  
+  //MARK: - Other Handle Action Methods
   //Dismiss
   @objc fileprivate func handleDismiss() {
 //    self.removeFromSuperview()
