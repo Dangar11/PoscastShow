@@ -219,6 +219,8 @@ class PodcastPlayerView: UIView {
     super.init(frame: frame)
     backgroundColor = .white
     
+    setupRemoteControl()
+    setupAudioSession()
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
     addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
     setupView()
@@ -275,7 +277,7 @@ class PodcastPlayerView: UIView {
   }
   
   //Pause-Play
-  @objc fileprivate func handlePlayPause() {
+  @objc func handlePlayPause() {
     
     if player.timeControlStatus == .paused {
       playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)

@@ -8,6 +8,7 @@
 
 import AVKit
 import UIKit
+import MediaPlayer
 
 
 extension PodcastPlayerView {
@@ -80,5 +81,51 @@ extension PodcastPlayerView {
     player.volume = value
   }
   
+  //Background audio session
+  func setupAudioSession() {
+    
+    do {
+        try AVAudioSession.sharedInstance().setCategory(.playback)
+       try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+    } catch let sessionError {
+      print("Failed to activate session:", sessionError)
+    }
+    
+  }
+  
+  //MARK: - Command Center
+  
+  func setupRemoteControl() {
+    UIApplication.shared.beginReceivingRemoteControlEvents()
+    
+    let commandCenter = MPRemoteCommandCenter.shared()
+
+    //PLAY BUTTON
+    commandCenter.playCommand.isEnabled = true
+    commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+      self.player.play()
+      self.playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+      self.miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+      return .success
+    }
+    //PAUSE BUTTON
+    commandCenter.pauseCommand.isEnabled = true
+    commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+      self.player.pause()
+      self.playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+      self.miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+      return .success
+    }
+    
+    //Handle Earpods and Airpods headphones play/pause functionality.
+    commandCenter.togglePlayPauseCommand.isEnabled = true
+    commandCenter.togglePlayPauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+      
+      self.handlePlayPause()
+      
+      return .success
+    }
+    
+  }
   
 }
