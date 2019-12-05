@@ -13,7 +13,6 @@ import MediaPlayer
 
 extension PodcastPlayerView {
   
- 
   
    func observePlayerCurrentTime() {
     //reported changeTime notify every 0.5 seconds
@@ -24,38 +23,29 @@ extension PodcastPlayerView {
       let durationTime = self?.player.currentItem?.duration
       self?.endDurationLabel.text = durationTime?.toDisplayString()
       
-      self?.setupLockscreenCurrentTime()
       
       self?.updateCurrentTimeSlider()
       
     }
   }
-  
-  //Duration and current time on lockscreen 
-  func setupLockscreenCurrentTime() {
-    
-    var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-    
-    guard let currentItem = player.currentItem else { return }
-    let durationInSeconds = CMTimeGetSeconds(currentItem.duration)
-    
-    let elapsedTime = CMTimeGetSeconds(player.currentTime())
-    
-    nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
-    nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationInSeconds
-    
-    
-    MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-  }
+
   
   
-   func normalPlayback() {
+   func observeBoundaryTime() {
     //call when caching ended and podcast is started to play
     let time = CMTime(value: 1, timescale: 3)
     let times = [NSValue(time: time)]
     player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
       self?.enlargePodcastImageView()
+      self?.setupLockscreenDuration()
     }
+  }
+  
+  //Fix duration elepsed time
+  func setupLockscreenDuration() {
+    guard let duration = player.currentItem?.duration else { return }
+    let durationSeconds = CMTimeGetSeconds(duration)
+    MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationSeconds
   }
   
   

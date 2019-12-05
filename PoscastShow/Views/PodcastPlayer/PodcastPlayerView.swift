@@ -30,7 +30,8 @@ class PodcastPlayerView: UIView {
       
       guard let url = URL(string: image) else { return }
       podcastImageView.sd_setImage(with: url)
-
+      
+      
       //mini player image loading and notification center
       miniPlayerImageView.sd_setImage(with: url) { (image, _, _, _) in
         
@@ -246,7 +247,7 @@ class PodcastPlayerView: UIView {
     //set from 0.0 - 1.0
     defaultVolumeValue(value: 0.3)
     observePlayerCurrentTime()
-    normalPlayback()
+    observeBoundaryTime()
     
     
   }
@@ -313,7 +314,6 @@ class PodcastPlayerView: UIView {
   
   //Time Slider
   @objc fileprivate func handleCurrentTimeSliderChange() {
-    print("Slider value: ", currentTimeSlider.value)
     
     let percantage = currentTimeSlider.value
     //set the playback to current time
@@ -325,6 +325,8 @@ class PodcastPlayerView: UIView {
     let seekTimeInSeconds = Float64(percantage) * durationInSeconds
     //Time object to represent number of seconds
     let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, preferredTimescale: 1)
+    
+    MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = seekTimeInSeconds
     
     player.seek(to: seekTime)
   }
