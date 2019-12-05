@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import MediaPlayer
 
 class PodcastPlayerView: UIView {
   
@@ -22,12 +23,30 @@ class PodcastPlayerView: UIView {
       miniPlayerLabel.text = title
     
       
+      setupNowPlayingInfo()
+      
       playEpisode()
       
       
       guard let url = URL(string: image) else { return }
       podcastImageView.sd_setImage(with: url)
-      miniPlayerImageView.sd_setImage(with: url)
+
+      //mini player image loading and notification center
+      miniPlayerImageView.sd_setImage(with: url) { (image, _, _, _) in
+        
+        guard let image = image else { return }
+        // logscreen artwork setup code
+        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        
+        //modifications
+        let artwork = MPMediaItemArtwork(boundsSize: image.size) { (_) -> UIImage in
+          return image
+        }
+        nowPlayingInfo?[MPMediaItemPropertyArtwork] = artwork
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+      }
+      
     }
   }
   

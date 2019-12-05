@@ -24,10 +24,28 @@ extension PodcastPlayerView {
       let durationTime = self?.player.currentItem?.duration
       self?.endDurationLabel.text = durationTime?.toDisplayString()
       
+      self?.setupLockscreenCurrentTime()
       
       self?.updateCurrentTimeSlider()
       
     }
+  }
+  
+  //Duration and current time on lockscreen 
+  func setupLockscreenCurrentTime() {
+    
+    var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+    
+    guard let currentItem = player.currentItem else { return }
+    let durationInSeconds = CMTimeGetSeconds(currentItem.duration)
+    
+    let elapsedTime = CMTimeGetSeconds(player.currentTime())
+    
+    nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+    nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationInSeconds
+    
+    
+    MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
   }
   
   
@@ -126,6 +144,16 @@ extension PodcastPlayerView {
       return .success
     }
     
+  }
+  
+  func setupNowPlayingInfo() {
+    var nowPlayingInfo = [String: Any]()
+    
+    nowPlayingInfo[MPMediaItemPropertyTitle] = episode?.title
+    nowPlayingInfo[MPMediaItemPropertyArtist] = episode?.author
+    
+    
+    MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
   }
   
 }
