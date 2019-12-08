@@ -116,6 +116,7 @@ extension PodcastPlayerView {
       self.player.play()
       self.playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
       self.miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+      self.setupElapsedTime(playbackRate: 1)
       return .success
     }
     //PAUSE BUTTON
@@ -124,6 +125,8 @@ extension PodcastPlayerView {
       self.player.pause()
       self.playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
       self.miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+      self.setupElapsedTime(playbackRate: 0)
+    
       return .success
     }
     
@@ -155,6 +158,14 @@ extension PodcastPlayerView {
     
   }
   
+  
+   func setupElapsedTime(playbackRate: Float) {
+      let elapsedTime = CMTimeGetSeconds(player.currentTime())
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = playbackRate
+  }
+  
+  //MARK: NextTrack
    fileprivate func handleNextTrack() {
 
     // if empty return nothing
@@ -180,7 +191,7 @@ extension PodcastPlayerView {
     
   }
   
-  
+  //MARK: PreviousTrack
   fileprivate func handlePreviousTrack() {
     // 1. check if playlistEpisodes.count == 0 then return
     // 2. find out current episode index
@@ -198,7 +209,7 @@ extension PodcastPlayerView {
     
     let prevEpisode: Episode
     if index == 0 {
-      prevEpisode = playlistEpisodes[playlistEpisodes.count - 1] // end of the list 
+      prevEpisode = playlistEpisodes[playlistEpisodes.count - 1] // end of the list
     } else {
       prevEpisode = playlistEpisodes[index - 1]
     }
@@ -219,6 +230,37 @@ extension PodcastPlayerView {
     
     
     MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+  }
+  
+  
+  //MARK: Interruption FIX when phone called, when other player starting to play, video, and other...
+  
+  
+  func setupInterruptionObserver() {
+    NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: nil)
+  }
+  
+  @objc fileprivate func handleInterruption(notification: Notification) {
+    
+    guard let userInfo = notification.userInfo else { return }
+    guard let type = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt else { return }
+    
+    if type == AVAudioSession.InterruptionType.began.rawValue {
+      print("Interaption began...")
+      playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+      miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+    } else {
+      print("Interaption ended...")
+      guard let options = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+      
+      if options == AVAudioSession.InterruptionOptions.shouldResume.rawValue {
+        player.play()
+        playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+        miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+      }
+      
+    }
+    
   }
   
 }

@@ -24,7 +24,7 @@ class PodcastPlayerView: UIView {
     
       
       setupNowPlayingInfo()
-      
+      setupAudioSession()
       playEpisode()
       
       
@@ -242,9 +242,9 @@ class PodcastPlayerView: UIView {
     backgroundColor = .white
     
     setupRemoteControl()
-    setupAudioSession()
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
     addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
+    setupInterruptionObserver() 
     setupView()
     //set from 0.0 - 1.0
     defaultVolumeValue(value: 0.3)
@@ -306,11 +306,13 @@ class PodcastPlayerView: UIView {
       miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
       player.play()
       enlargePodcastImageView()
+      setupElapsedTime(playbackRate: 1)
     } else {
       playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
       miniPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
       player.pause()
       shrinkEpisodeImageView()
+      setupElapsedTime(playbackRate: 0)
     }
   }
   
