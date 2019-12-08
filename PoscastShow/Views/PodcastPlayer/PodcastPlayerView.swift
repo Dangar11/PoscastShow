@@ -51,6 +51,8 @@ class PodcastPlayerView: UIView {
     }
   }
   
+  var playlistEpisodes = [Episode]() 
+  
   let player: AVPlayer = {
       let av = AVPlayer()
       av.automaticallyWaitsToMinimizeStalling = false

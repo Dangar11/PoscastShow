@@ -31,6 +31,8 @@ extension PodcastPlayerView {
 
   
   
+  
+  
    func observeBoundaryTime() {
     //call when caching ended and podcast is started to play
     let time = CMTime(value: 1, timescale: 3)
@@ -134,7 +136,80 @@ extension PodcastPlayerView {
       return .success
     }
     
+    //Next Track
+    
+    commandCenter.nextTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+      
+      self.handleNextTrack()
+      return .success
+    }
+    
+    //Previous Track
+    
+    commandCenter.previousTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+      
+      self.handlePreviousTrack()
+      return .success
+      
+    }
+    
   }
+  
+   fileprivate func handleNextTrack() {
+
+    // if empty return nothing
+    if playlistEpisodes.count == 0 {
+      return
+    }
+    // current episode index
+    let currentEpisodeIndex = playlistEpisodes.firstIndex { (ep) -> Bool in
+      return self.episode?.title == ep.title && self.episode?.author == ep.author
+    }
+    
+    guard let index = currentEpisodeIndex else { return }
+    
+    
+    let nextEpisode: Episode
+    if index == playlistEpisodes.count - 1 {
+       nextEpisode = playlistEpisodes[0]
+    } else {
+       nextEpisode = playlistEpisodes[index + 1]
+    }
+    
+    self.episode = nextEpisode
+    
+  }
+  
+  
+  fileprivate func handlePreviousTrack() {
+    // 1. check if playlistEpisodes.count == 0 then return
+    // 2. find out current episode index
+    // 3. if episode index is 0, wrap to end of list somehow..
+          // otherwise play episode index - 1
+    if playlistEpisodes.count == 0 {
+      return
+    }
+    
+    let currentEpisodeIndex = playlistEpisodes.firstIndex { (ep) -> Bool in
+      return self.episode?.title == ep.title && self.episode?.author == ep.author
+    }
+    
+    guard let index = currentEpisodeIndex else { return }
+    
+    let prevEpisode: Episode
+    if index == 0 {
+      prevEpisode = playlistEpisodes[playlistEpisodes.count - 1] // end of the list 
+    } else {
+      prevEpisode = playlistEpisodes[index - 1]
+    }
+    self.episode = prevEpisode
+    
+    
+  }
+  
+  
+  
+  
   
   func setupNowPlayingInfo() {
     var nowPlayingInfo = [String: Any]()

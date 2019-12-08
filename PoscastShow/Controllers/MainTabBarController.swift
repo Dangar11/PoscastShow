@@ -46,12 +46,14 @@ class MainTabBarController: UITabBarController {
     
   }
   
-   func maximizePlayerDetails(episode: Episode?) {
+  func maximizePlayerDetails(episode: Episode?, playlistEpisodes: [Episode] = []) {
     maximizedTopAnchorConstraint.isActive = true
     maximizedTopAnchorConstraint.constant = 0
     minimizedTopAnchorConstraint.isActive = false
     
     podcastPlayerView.episode = episode
+    
+    podcastPlayerView.playlistEpisodes = playlistEpisodes
     
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
       //call everytime when rearange constraints
