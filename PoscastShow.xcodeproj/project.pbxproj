@@ -28,6 +28,7 @@
 		DDA9CE9C238B1126006C3368 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE9B238B1126006C3368 /* APIService.swift */; };
 		DDA9CE9F238C37C7006C3368 /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA9CE9E238C37C7006C3368 /* PodcastCell.swift */; };
 		DDA9CEA3238C5D89006C3368 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = DDA9CEA2238C5D89006C3368 /* SDWebImage */; };
+		DDC55A9A239D8C0100829538 /* FavoritesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC55A99239D8C0100829538 /* FavoritesController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		DDA9CE98238B02FF006C3368 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		DDA9CE9B238B1126006C3368 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		DDA9CE9E238C37C7006C3368 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
+		DDC55A99239D8C0100829538 /* FavoritesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 				DDA9CE8A238AA773006C3368 /* MainTabBarController.swift */,
 				DDA9CE90238AC53B006C3368 /* SearchController.swift */,
 				DD958E40239001B200A369F7 /* EpisodesController.swift */,
+				DDC55A99239D8C0100829538 /* FavoritesController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				DD678FF523919E3C00EAE117 /* CMTime.swift in Sources */,
 				DD958E43239005F900A369F7 /* Episodes.swift in Sources */,
 				DD958E41239001B200A369F7 /* EpisodesController.swift in Sources */,
+				DDC55A9A239D8C0100829538 /* FavoritesController.swift in Sources */,
 				DDA9CE77238AA63B006C3368 /* AppDelegate.swift in Sources */,
 				DDA9CE8B238AA773006C3368 /* MainTabBarController.swift in Sources */,
 				DDA9CE99238B02FF006C3368 /* SearchResults.swift in Sources */,
