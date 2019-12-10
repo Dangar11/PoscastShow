@@ -13,7 +13,7 @@ import FeedKit
 class EpisodesController: UITableViewController {
   
   
-  var podcast: Results? {
+  var podcast: Podcast? {
     
     didSet {
       navigationItem.title = podcast?.collectionName
@@ -30,6 +30,7 @@ class EpisodesController: UITableViewController {
     super.viewDidLoad()
     
     setupTableView()
+    setupNavigationBarButtons()
  
   }
   
@@ -46,6 +47,52 @@ class EpisodesController: UITableViewController {
       }
     }
   }
+  
+  fileprivate func setupNavigationBarButtons() {
+    
+    navigationItem.rightBarButtonItems = [
+      UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleFavorite)),
+      UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcast))
+    ]
+    
+  }
+  
+  let favoritePodcastKey = "favoritePoscastKey"
+  
+   @objc fileprivate func handleFetchSavedPodcast() {
+    print("fetching from user deefaults")
+    guard let data = UserDefaults.standard.data(forKey: favoritePodcastKey) else { return }
+    do {
+      guard let podcast = try NSKeyedUnarchiver.unarchivedObject(ofClass: Podcast.self, from: data) else { return }
+      
+      print(podcast.collectionName, podcast.artistName)
+    } catch let errorUnarchiver {
+      print("Failed to unarchive data ", errorUnarchiver)
+    }
+   
+    
+  }
+  
+  
+  @objc fileprivate func handleFavorite() {
+    print("Saving into userDefaults")
+    
+    guard let podcast = self.podcast else { return }
+    
+    // Transform podcast into Data
+    do {
+      let data = try NSKeyedArchiver.archivedData(withRootObject: podcast, requiringSecureCoding: false)
+      UserDefaults.standard.set(data, forKey: favoritePodcastKey)
+    } catch let errorData {
+      print("Failed to transform custom struct into data: ", errorData)
+    }
+   
+    
+    
+  }
+  
+  
+  
     
   
   

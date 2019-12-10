@@ -52,7 +52,7 @@ class APIService {
   
   
   
-  func fetchPodcast(searchText: String, completionHandler: @escaping ([Results]) -> ()) {
+  func fetchPodcast(searchText: String, completionHandler: @escaping ([Podcast]) -> ()) {
     print("Searching for podcast...")
     
     

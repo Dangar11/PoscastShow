@@ -13,7 +13,7 @@ import SDWebImage
 
 class PoscastCell: UITableViewCell {
   
-  var podcast: Results? {
+  var podcast: Podcast? {
     didSet {
       if let artist = podcast?.artistName, let image = podcast?.artworkUrl600, let episode = podcast?.collectionName, let episodeCount = podcast?.trackCount {
         episodeNameLabel.text = episode

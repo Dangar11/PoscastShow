@@ -20,7 +20,6 @@ class FavoritePodcastCell: UICollectionViewCell  {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
     label.numberOfLines = 2
-    label.text = "About my life changes during operation in heart"
     return label
   }()
   
@@ -28,7 +27,6 @@ class FavoritePodcastCell: UICollectionViewCell  {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 14, weight: .light)
     label.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-    label.text = "Brian Voong"
     return label
   }()
   
