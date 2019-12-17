@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DD5D32AC23A9547200B8E126 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5D32AB23A9547200B8E126 /* UIApplication.swift */; };
 		DD5D32AE23A9580400B8E126 /* Poscast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5D32AD23A9580400B8E126 /* Poscast.swift */; };
+		DD5D32B023A9741200B8E126 /* DownloadsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5D32AF23A9741200B8E126 /* DownloadsController.swift */; };
 		DD678FF523919E3C00EAE117 /* CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD678FF423919E3C00EAE117 /* CMTime.swift */; };
 		DD678FFC2393D7EE00EAE117 /* PodcastPlayerView+AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD678FFB2393D7EE00EAE117 /* PodcastPlayerView+AVKit.swift */; };
 		DD678FFE2393D8B400EAE117 /* PoscastPlayerView+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD678FFD2393D8B400EAE117 /* PoscastPlayerView+UI.swift */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		DD5D32AB23A9547200B8E126 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		DD5D32AD23A9580400B8E126 /* Poscast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poscast.swift; sourceTree = "<group>"; };
+		DD5D32AF23A9741200B8E126 /* DownloadsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsController.swift; sourceTree = "<group>"; };
 		DD678FF423919E3C00EAE117 /* CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMTime.swift; sourceTree = "<group>"; };
 		DD678FFB2393D7EE00EAE117 /* PodcastPlayerView+AVKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PodcastPlayerView+AVKit.swift"; sourceTree = "<group>"; };
 		DD678FFD2393D8B400EAE117 /* PoscastPlayerView+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PoscastPlayerView+UI.swift"; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				DDA9CE90238AC53B006C3368 /* SearchController.swift */,
 				DD958E40239001B200A369F7 /* EpisodesController.swift */,
 				DDC55A99239D8C0100829538 /* FavoritesController.swift */,
+				DD5D32AF23A9741200B8E126 /* DownloadsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				DDA9CE8B238AA773006C3368 /* MainTabBarController.swift in Sources */,
 				DDA8E75723A824BE005BF1EC /* UserDefaults.swift in Sources */,
 				DDA9CE99238B02FF006C3368 /* SearchResults.swift in Sources */,
+				DD5D32B023A9741200B8E126 /* DownloadsController.swift in Sources */,
 				DD67C6DD23A029AA00C1D3CF /* FavoritePodcastCell.swift in Sources */,
 				DDA9CE91238AC53B006C3368 /* SearchController.swift in Sources */,
 			);

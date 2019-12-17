@@ -12,6 +12,7 @@ import Foundation
 extension UserDefaults {
   
   static let favoritePodcastKey = "favoritePoscastKey"
+  static let downloadedEpisodeKey = "downloadedEpisodeKey"
   
   func savedPodcast() -> [Podcasts] {
     guard let savedPodcastData = UserDefaults.standard.data(forKey: UserDefaults.favoritePodcastKey) else { return []}
@@ -39,5 +40,48 @@ extension UserDefaults {
     }
   
   }
+  
+  
+  
+  func downloadEpisode(episode: Episode) {
+    
+    do {
+      var episodes = downloadedEpisodes()
+      episodes.insert(episode, at: 0)
+      let data = try JSONEncoder().encode(episodes)
+      UserDefaults.standard.set(data, forKey: UserDefaults.downloadedEpisodeKey)
+    } catch let encoderError {
+      print("Failed encode Episode for download: ", encoderError)
+    }
+  }
+  
+  func downloadedEpisodes() -> [Episode] {
+    guard let episodesData = data(forKey: UserDefaults.downloadedEpisodeKey) else { return []}
+    
+    do {
+      let decodeEpisode = try JSONDecoder().decode([Episode].self, from: episodesData)
+      return decodeEpisode
+    } catch let decodeError {
+      print("Failed to decode Downloads Episodes: ", decodeError)
+    }
+    return []
+  }
+  
+  
+  func deleteEpisode(episode: Episode) {
+    let episodes = downloadedEpisodes()
+    let filteredEpisodes = episodes.filter { (ep) -> Bool in
+      return ep.title != episode.title
+    }
+    do {
+      let data = try JSONEncoder().encode(filteredEpisodes)
+      UserDefaults.standard.set(data, forKey: UserDefaults.downloadedEpisodeKey)
+    } catch let deleteError {
+      print("Failed to delete Donwload Episodes: ", deleteError)
+    }
+    
+  }
+  
+  
   
 }

@@ -166,8 +166,20 @@ class EpisodesController: UITableViewController {
     let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
     mainTabBarController?.maximizePlayerDetails(episode: episode, playlistEpisodes: self.episodes)
     
-    
+  }
+  
+  
+  
+  //MARK: Editing Cell
+  override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let downloadAction = UIContextualAction(style: .normal, title: "Download") { (_, _, _) in
+      print("Download episode into UserDefaults")
+      let episode = self.episodes[indexPath.row]
+      UserDefaults.standard.downloadEpisode(episode: episode)
+    }
+    downloadAction.backgroundColor = .systemGreen
 
+    return UISwipeActionsConfiguration(actions: [downloadAction])
   }
   
   

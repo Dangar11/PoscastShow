@@ -54,7 +54,7 @@ class EpisodesCell: UITableViewCell {
     label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     label.textColor = .black
     label.numberOfLines = 2
-    label.text = "Let's Build that AppLet's Build that AppLet's Build that AppLet's Build that AppLet's Build that App"
+    label.text = "Downcast from John Sundell Downcast from John Sundell"
     return label
   }()
   
