@@ -15,7 +15,7 @@ class SearchController: UITableViewController {
   
   let cellId = "searchCell"
   
-  var podcasts = [Podcast]()
+  var podcasts = [Podcasts]()
   
   //search delay
   var timer: Timer?

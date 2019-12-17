@@ -13,10 +13,10 @@ extension UserDefaults {
   
   static let favoritePodcastKey = "favoritePoscastKey"
   
-  func savedPodcast() -> [Podcast] {
+  func savedPodcast() -> [Podcasts] {
     guard let savedPodcastData = UserDefaults.standard.data(forKey: UserDefaults.favoritePodcastKey) else { return []}
     do {
-      guard let savedPodcasts = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedPodcastData) as? [Podcast] else { return []}
+      guard let savedPodcasts = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedPodcastData) as? [Podcasts] else { return []}
       return savedPodcasts
     } catch let savedErrorPodcast {
       print("Unable to retrieve savedPodcasts: ", savedErrorPodcast)
@@ -25,7 +25,7 @@ extension UserDefaults {
   }
   
   
-  func deletePodcast(podcast: Podcast) {
+  func deletePodcast(podcast: Podcasts) {
     let podcasts = savedPodcast()
     //filter all by compare with json initial data
     let filteredPodcasts = podcasts.filter { (p) -> Bool in

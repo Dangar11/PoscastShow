@@ -11,7 +11,7 @@ import UIKit
 
 class FavoritePodcastCell: UICollectionViewCell  {
   
-  var podcast: Podcast! {
+  var podcast: Podcasts! {
     didSet {
       guard let podcastInfo = podcast.collectionName, let author = podcast.artistName, let imagePodcast = podcast.artworkUrl600 else { return }
       guard let imageURL = URL(string: imagePodcast) else { return }

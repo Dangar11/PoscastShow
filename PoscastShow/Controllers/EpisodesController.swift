@@ -13,7 +13,7 @@ import FeedKit
 class EpisodesController: UITableViewController {
   
   
-  var podcast: Podcast? {
+  var podcast: Podcasts? {
     
     didSet {
       navigationItem.title = podcast?.collectionName
@@ -49,11 +49,18 @@ class EpisodesController: UITableViewController {
   }
   
   fileprivate func setupNavigationBarButtons() {
+    //check if we already saved this podcast as favorite
     
-    navigationItem.rightBarButtonItems = [
-      UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleFavorite)),
-      UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcast))
-    ]
+    let savedPodcast = UserDefaults.standard.savedPodcast()
+    let hasFavorited = savedPodcast.lastIndex(where: { $0.collectionName == self.podcast?.collectionName && $0.artistName == podcast?.artistName }) != nil
+    if hasFavorited {
+      // setting heart icon
+      navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "35 heart").withRenderingMode(.alwaysOriginal), style: .plain, target: nil, action: nil)
+    } else {
+      navigationItem.rightBarButtonItems = [
+        UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleFavorite)),
+      ]
+    }
     
   }
   
@@ -62,7 +69,7 @@ class EpisodesController: UITableViewController {
     print("fetching from user deefaults")
     guard let data = UserDefaults.standard.data(forKey: UserDefaults.favoritePodcastKey) else { return }
     do {
-       let podcast = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Podcast]
+       let podcast = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Podcasts]
       
       podcast?.forEach({ (podcastIn) in
         print(podcastIn.collectionName, podcastIn.artistName)
@@ -76,12 +83,14 @@ class EpisodesController: UITableViewController {
   }
   
   
+  
+  
   @objc fileprivate func handleFavorite() {
     print("Saving into userDefaults")
     
     guard let podcast = self.podcast else { return }
     
-    var listOfPodcast = [Podcast]()
+    var listOfPodcast = [Podcasts]()
     
     //1. Fetch podcast
     listOfPodcast = UserDefaults.standard.savedPodcast()
@@ -97,11 +106,17 @@ class EpisodesController: UITableViewController {
       print("Failed to transform custom struct into data: ", errorData)
     }
    
+    showBadgeHighlight()
+    self.navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "35 heart").withRenderingMode(.alwaysOriginal)
     
     
   }
   
   
+  
+  fileprivate func showBadgeHighlight() {
+    UIApplication.mainTabBarController()?.viewControllers?[1].tabBarItem.badgeValue = "New"
+  }
   
     
   
