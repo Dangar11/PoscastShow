@@ -57,15 +57,17 @@ class EpisodesController: UITableViewController {
     
   }
   
-  let favoritePodcastKey = "favoritePoscastKey"
   
    @objc fileprivate func handleFetchSavedPodcast() {
     print("fetching from user deefaults")
-    guard let data = UserDefaults.standard.data(forKey: favoritePodcastKey) else { return }
+    guard let data = UserDefaults.standard.data(forKey: UserDefaults.favoritePodcastKey) else { return }
     do {
-      guard let podcast = try NSKeyedUnarchiver.unarchivedObject(ofClass: Podcast.self, from: data) else { return }
+       let podcast = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Podcast]
       
-      print(podcast.collectionName, podcast.artistName)
+      podcast?.forEach({ (podcastIn) in
+        print(podcastIn.collectionName, podcastIn.artistName)
+      })
+//      print(podcast?.collectionName, podcast?.artistName)
     } catch let errorUnarchiver {
       print("Failed to unarchive data ", errorUnarchiver)
     }
@@ -79,10 +81,18 @@ class EpisodesController: UITableViewController {
     
     guard let podcast = self.podcast else { return }
     
-    // Transform podcast into Data
+    var listOfPodcast = [Podcast]()
+    
+    //1. Fetch podcast
+    listOfPodcast = UserDefaults.standard.savedPodcast()
+    
+    
+    // 2. Transform podcast into Data
     do {
-      let data = try NSKeyedArchiver.archivedData(withRootObject: podcast, requiringSecureCoding: false)
-      UserDefaults.standard.set(data, forKey: favoritePodcastKey)
+      
+      listOfPodcast.append(podcast)
+      let data = try NSKeyedArchiver.archivedData(withRootObject: listOfPodcast, requiringSecureCoding: false)
+      UserDefaults.standard.set(data, forKey: UserDefaults.favoritePodcastKey)
     } catch let errorData {
       print("Failed to transform custom struct into data: ", errorData)
     }

@@ -11,6 +11,20 @@ import UIKit
 
 class FavoritePodcastCell: UICollectionViewCell  {
   
+  var podcast: Podcast! {
+    didSet {
+      guard let podcastInfo = podcast.collectionName, let author = podcast.artistName, let imagePodcast = podcast.artworkUrl600 else { return }
+      guard let imageURL = URL(string: imagePodcast) else { return }
+      
+      
+      podcastLabel.text = podcastInfo
+      authorLabel.text = author
+      
+      podcastImageView.sd_setImage(with: imageURL)
+      
+    }
+  }
+  
   let podcastImageView: UIImageView = {
     let imageView = UIImageView(image: #imageLiteral(resourceName: "appicon"))
     return imageView

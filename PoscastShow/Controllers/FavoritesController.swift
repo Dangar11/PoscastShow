@@ -14,6 +14,8 @@ class FavoritesController: UICollectionViewController {
   
   let cellId = "favoritesIdCell"
   
+  var podcasts = UserDefaults.standard.savedPodcast()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -24,19 +26,47 @@ class FavoritesController: UICollectionViewController {
   fileprivate func setupCollectionView() {
     collectionView.backgroundColor = .white
     collectionView.register(FavoritePodcastCell.self, forCellWithReuseIdentifier: cellId)
+    let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+    collectionView.addGestureRecognizer(gesture)
   }
   
   
   
   //MARK: CollectionView Source
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 5
+    return podcasts.count
   }
   
   
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FavoritePodcastCell
+    cell.podcast = self.podcasts[indexPath.item]
     return cell
+  }
+  
+  
+  
+  @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
+  
+    //get indexPath by location CGpoint
+    let location = gesture.location(in: collectionView)
+    
+    guard let selectedIndexPath = collectionView.indexPathForItem(at: location) else { return }
+    
+    print(selectedIndexPath.item)
+    
+    let alertController = UIAlertController(title: "Remove Podcast?", message: nil, preferredStyle: .actionSheet)
+    alertController.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (_) in
+      //remove podcast from collecitonView
+      let selectedPodcast = self.podcasts[selectedIndexPath.item]
+      self.podcasts.remove(at: selectedIndexPath.item)
+      UserDefaults.standard.deletePodcast(podcast: selectedPodcast)
+      self.collectionView.deleteItems(at: [selectedIndexPath])
+      //remove from userDefaults
+    }))
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    
+    present(alertController, animated: true)
   }
   
 }
