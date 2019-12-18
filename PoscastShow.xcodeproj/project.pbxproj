@@ -10,6 +10,7 @@
 		DD5D32AC23A9547200B8E126 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5D32AB23A9547200B8E126 /* UIApplication.swift */; };
 		DD5D32AE23A9580400B8E126 /* Poscast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5D32AD23A9580400B8E126 /* Poscast.swift */; };
 		DD5D32B023A9741200B8E126 /* DownloadsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5D32AF23A9741200B8E126 /* DownloadsController.swift */; };
+		DD5D32B223AABFEF00B8E126 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5D32B123AABFEF00B8E126 /* Notification.swift */; };
 		DD678FF523919E3C00EAE117 /* CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD678FF423919E3C00EAE117 /* CMTime.swift */; };
 		DD678FFC2393D7EE00EAE117 /* PodcastPlayerView+AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD678FFB2393D7EE00EAE117 /* PodcastPlayerView+AVKit.swift */; };
 		DD678FFE2393D8B400EAE117 /* PoscastPlayerView+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD678FFD2393D8B400EAE117 /* PoscastPlayerView+UI.swift */; };
@@ -40,6 +41,7 @@
 		DD5D32AB23A9547200B8E126 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		DD5D32AD23A9580400B8E126 /* Poscast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poscast.swift; sourceTree = "<group>"; };
 		DD5D32AF23A9741200B8E126 /* DownloadsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsController.swift; sourceTree = "<group>"; };
+		DD5D32B123AABFEF00B8E126 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		DD678FF423919E3C00EAE117 /* CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMTime.swift; sourceTree = "<group>"; };
 		DD678FFB2393D7EE00EAE117 /* PodcastPlayerView+AVKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PodcastPlayerView+AVKit.swift"; sourceTree = "<group>"; };
 		DD678FFD2393D8B400EAE117 /* PoscastPlayerView+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PoscastPlayerView+UI.swift"; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				DD678FF423919E3C00EAE117 /* CMTime.swift */,
 				DDA8E75623A824BE005BF1EC /* UserDefaults.swift */,
 				DD5D32AB23A9547200B8E126 /* UIApplication.swift */,
+				DD5D32B123AABFEF00B8E126 /* Notification.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				DD5D32AE23A9580400B8E126 /* Poscast.swift in Sources */,
 				DD958E4E2390523100A369F7 /* RSSFeed.swift in Sources */,
 				DDA9CE7B238AA63B006C3368 /* ViewController.swift in Sources */,
+				DD5D32B223AABFEF00B8E126 /* Notification.swift in Sources */,
 				DD958E482390444D00A369F7 /* EpisodesCell.swift in Sources */,
 				DD5D32AC23A9547200B8E126 /* UIApplication.swift in Sources */,
 				DD678FF523919E3C00EAE117 /* CMTime.swift in Sources */,

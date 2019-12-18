@@ -21,6 +21,7 @@ class DownloadsController: UITableViewController {
     
     
     setupTableView()
+    setupObservers()
     
   }
   
@@ -30,13 +31,44 @@ class DownloadsController: UITableViewController {
     tableView.reloadData()
   }
   
-  
+  fileprivate func setupObservers() {
+    NotificationCenter.default.addObserver(self, selector: #selector(handleDownloadProgress), name: .downloadProgress, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(handleDownloadComplete), name: .downloadComplete, object: nil)
+  }
   
   fileprivate func setupTableView() {
     tableView.register(EpisodesCell.self, forCellReuseIdentifier: cellId)
   }
   
+  @objc fileprivate func handleDownloadProgress(notification: Notification) {
+    
+    guard let userInfo = notification.userInfo as? [String : Any] else { return }
+    guard let progress = userInfo["progress"] as? Double, let title = userInfo["title"] as? String else { return }
+    
+    print(title, progress)
+    // lets find index using title
+    guard let index = self.episodes.lastIndex(where: { $0.title == title }) else { return }
+    
+    guard let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EpisodesCell else { return }
+    cell.downloadProgressLabel.isHidden = false
+    cell.downloadProgressLabel.text = "\(Int(100 * progress))%"
+    
+    if progress == 1.0 {
+      cell.downloadProgressLabel.isHidden = true
+    }
+    
+  }
   
+  
+  @objc fileprivate func handleDownloadComplete(notification: Notification) {
+    
+    guard let episodeDownloadComplete = notification.object as? APIService.EpisodeDownloadComplete else { return }
+    
+    guard let index = self.episodes.lastIndex(where: { $0.title == episodeDownloadComplete.episodeTitle }) else { return }
+    
+    self.episodes[index].fileUrl = episodeDownloadComplete.fileUrl
+    
+  }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return episodes.count
@@ -55,11 +87,11 @@ class DownloadsController: UITableViewController {
   
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    print("Launch episode player")
+
     let episode = self.episodes[indexPath.row]
     
     if episode.fileUrl != nil {
-      
+      UIApplication.mainTabBarController()?.maximizePlayerDetails(episode: episode, playlistEpisodes: self.episodes)
     } else {
       let alertController = UIAlertController(title: "File URL not found", message: "Cannot find local file, play using stream url instead", preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (_) in

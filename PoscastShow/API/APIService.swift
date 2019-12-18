@@ -12,6 +12,9 @@ import FeedKit
 
 class APIService {
   
+  
+  typealias EpisodeDownloadComplete = (fileUrl: String, episodeTitle: String)
+  
   let url = "https://itunes.apple.com/search"
   
   //singleton
@@ -99,8 +102,17 @@ class APIService {
     
     Alamofire.download(episode.streamURL, to: downloadRequest).downloadProgress { (progress) in
       print(progress.fractionCompleted)
+      //Download Progress notify DownloadsController to download progress
+      
+      NotificationCenter.default.post(name: .downloadProgress, object: nil, userInfo: ["title" : episode.title, "progress" : progress.fractionCompleted])
+      
+      
     }.response { (response) in
       print(response.destinationURL?.absoluteString ?? "")
+      
+      // Notification 
+      let episodeDownloadComplete = EpisodeDownloadComplete(fileUrl: response.destinationURL?.absoluteString ?? "", episode.title)
+      NotificationCenter.default.post(name: .downloadComplete, object: episodeDownloadComplete, userInfo: nil)
       
       //update UserDefaults donwload episodes with temp file
       //take fetch Episodes

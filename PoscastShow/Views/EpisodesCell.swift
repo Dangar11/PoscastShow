@@ -67,6 +67,20 @@ class EpisodesCell: UITableViewCell {
     return label
   }()
   
+  let downloadProgressLabel: UILabel = {
+    let label = UILabel()
+    label.font = UIFont.systemFont(ofSize: 26, weight: .bold)
+    label.numberOfLines = 0
+    label.textAlignment = .center
+    label.text = "100%"
+    label.textColor = .white
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.shadowOffset = CGSize(width: 0, height: 1)
+    label.shadowColor = .black
+    label.isHidden = true
+    return label
+  }()
+  
   
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -87,6 +101,10 @@ class EpisodesCell: UITableViewCell {
     episodeImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
     episodeImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
     episodeImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+    episodeImageView.addSubview(downloadProgressLabel)
+    
+    downloadProgressLabel.centerYAnchor.constraint(equalTo: episodeImageView.centerYAnchor).isActive = true
+    downloadProgressLabel.centerXAnchor.constraint(equalTo: episodeImageView.centerXAnchor).isActive = true
     
     let stackViewLabel = UIStackView(arrangedSubviews: [
     dateLabel,
