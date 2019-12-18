@@ -17,6 +17,7 @@ struct Episode: Codable {
   let author: String
    let streamURL: String
   
+  var fileUrl: String?
   var imageURL: String?
  
   

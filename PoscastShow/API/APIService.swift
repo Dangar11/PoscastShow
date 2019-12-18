@@ -91,5 +91,38 @@ class APIService {
   }
   
   
+  func downloadsEpisode(episode: Episode) {
+    print("Download episode using Alamofire at stream: ", episode.streamURL)
+    
+    //filemanager
+    let downloadRequest = DownloadRequest.suggestedDownloadDestination()
+    
+    Alamofire.download(episode.streamURL, to: downloadRequest).downloadProgress { (progress) in
+      print(progress.fractionCompleted)
+    }.response { (response) in
+      print(response.destinationURL?.absoluteString ?? "")
+      
+      //update UserDefaults donwload episodes with temp file
+      //take fetch Episodes
+      var downloadEpisodes = UserDefaults.standard.downloadedEpisodes()
+      //Get index of current episode
+      guard let index = downloadEpisodes.lastIndex(where: { $0.title == episode.title && $0.author == episode.author }) else { return }
+      //fullfill the index fileUrl with absolute url from FileManager url
+      downloadEpisodes[index].fileUrl = response.destinationURL?.absoluteString ?? ""
+      
+      do {
+        let data = try JSONEncoder().encode(downloadEpisodes)
+        //write this url into UserDefaults
+        UserDefaults.standard.set(data, forKey: UserDefaults.downloadedEpisodeKey)
+      } catch let err {
+        print("Failed to encode downloaded with file url update: ", err)
+      }
+      
+      
+    }
+    
+  }
+  
+  
 }
 

@@ -72,7 +72,6 @@ class EpisodesController: UITableViewController {
        let podcast = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Podcasts]
       
       podcast?.forEach({ (podcastIn) in
-        print(podcastIn.collectionName, podcastIn.artistName)
       })
 //      print(podcast?.collectionName, podcast?.artistName)
     } catch let errorUnarchiver {
@@ -170,12 +169,15 @@ class EpisodesController: UITableViewController {
   
   
   
-  //MARK: Editing Cell
+  //MARK: Swipe for Editing
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let downloadAction = UIContextualAction(style: .normal, title: "Download") { (_, _, _) in
       print("Download episode into UserDefaults")
       let episode = self.episodes[indexPath.row]
       UserDefaults.standard.downloadEpisode(episode: episode)
+      
+      //download the podcast episode using Alamofire
+      APIService.shared.downloadsEpisode(episode: episode)
     }
     downloadAction.backgroundColor = .systemGreen
 

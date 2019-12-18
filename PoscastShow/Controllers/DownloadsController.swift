@@ -52,6 +52,17 @@ class DownloadsController: UITableViewController {
     return 150
   }
   
+  
+  
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    print("Launch episode player")
+    let episode = self.episodes[indexPath.row]
+    
+    UIApplication.mainTabBarController()?.maximizePlayerDetails(episode: episode, playlistEpisodes: self.episodes)
+  }
+  
+  
+  //MARK: Swipe for editing
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
       let selectedEpisode = self.episodes[indexPath.row]
