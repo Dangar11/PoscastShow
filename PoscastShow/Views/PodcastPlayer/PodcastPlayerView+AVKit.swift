@@ -76,12 +76,33 @@ extension PodcastPlayerView {
   }
   
    func playEpisode()  {
+    
+    if episode?.fileUrl != nil {
+     playEpisodeUsingFileUrl()
+    } else {
+      guard let streamURL = episode?.streamURL else { return }
+      guard let url = URL(string: streamURL) else { return }
+      let playerItem = AVPlayerItem(url: url)
+      player.replaceCurrentItem(with: playerItem)
+      player.play()
+    }
   
-    guard let streamURL = episode?.streamURL else { return }
-    guard let url = URL(string: streamURL) else { return }
-    let playerItem = AVPlayerItem(url: url)
-    player.replaceCurrentItem(with: playerItem)
-    player.play()
+    
+  }
+  
+  fileprivate func playEpisodeUsingFileUrl() {
+    // 1. file name for our downloaded episode
+         guard let fileURL = URL(string: episode?.fileUrl ?? "") else { return }
+         let filename = fileURL.lastPathComponent
+         
+         //2. true location for our downloaded podcast
+         guard var locationUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+         locationUrl.appendPathComponent(filename)
+         
+         //3. get the correct location for offline audio player
+         let playerItem = AVPlayerItem(url: locationUrl)
+         player.replaceCurrentItem(with: playerItem)
+         player.play()
   }
   
   
