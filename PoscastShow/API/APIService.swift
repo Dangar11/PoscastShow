@@ -118,7 +118,7 @@ class APIService {
       //take fetch Episodes
       var downloadEpisodes = UserDefaults.standard.downloadedEpisodes()
       //Get index of current episode
-      guard let index = downloadEpisodes.lastIndex(where: { $0.title == episode.title && $0.author == episode.author }) else { return }
+      guard let index = downloadEpisodes.firstIndex(where: { $0.title == episode.title && $0.author == episode.author }) else { return }
       //fullfill the index fileUrl with absolute url from FileManager url
       downloadEpisodes[index].fileUrl = response.destinationURL?.absoluteString ?? ""
       

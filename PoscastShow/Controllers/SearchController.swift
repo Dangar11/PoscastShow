@@ -32,7 +32,7 @@ class SearchController: UITableViewController {
     setupSearchBar()
     setupTableView()
     
-    searchBar(searchController.searchBar, textDidChange: "Voong")
+//    searchBar(searchController.searchBar, textDidChange: "Npr")
   }
   
   
@@ -73,7 +73,7 @@ class SearchController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let label = UILabel()
-    label.text = "Please enter a Search Term"
+    label.text = "Please enter podcast name..."
     label.textAlignment = .center
     label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
     return label

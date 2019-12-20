@@ -243,7 +243,6 @@ class PodcastPlayerView: UIView {
     
     setupRemoteControl()
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
-    addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
     setupInterruptionObserver() 
     setupView()
     //set from 0.0 - 1.0
@@ -271,23 +270,7 @@ class PodcastPlayerView: UIView {
   }
   
   
-  @objc func handleDismissalPan(gesture: UIPanGestureRecognizer) {
-    
-    if gesture.state == .changed {
-      let translation = gesture.translation(in: superview)
-      transform = CGAffineTransform(translationX: 0, y: translation.y)
-    } else if gesture.state == .ended {
-      let translation = gesture.translation(in: superview)
-      UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-        self.transform = .identity
-        if translation.y > 50 {
-          let mainTabBarConroller = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-          mainTabBarConroller?.minimizePlayerDetails()
-        }
-      })
-    }
-    
-  }
+
 
   
   //MARK: - Other Handle Action Methods
